@@ -1,3 +1,7 @@
 node_modules
 mongo_data
+<<<<<<< HEAD
 .env
+=======
+.env
+>>>>>>> a868d9873bb652a033d5e02a7d1b8b1354808099

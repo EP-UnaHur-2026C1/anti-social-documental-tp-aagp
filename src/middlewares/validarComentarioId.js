@@ -3,9 +3,12 @@ const Comment = require("../models/comment");
 const validarComentarioId = async (req, res, next) => {
     try {
         const { id } = req.params;
-        const comentario = await Comment.findById(id).select(
-            "-createdAt -updatedAt -__v"
-        );
+        const comentario = await Comment.findById(id)
+            //.populate("userId", "nickname")
+            //.populate("postId", "description")
+            .select(
+                "-createdAt -updatedAt -__v"
+            );
         if (!comentario) {
             return res.status(404).json({
                 message: "Comentario no encontrado",

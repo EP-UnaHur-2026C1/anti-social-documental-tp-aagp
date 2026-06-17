@@ -9,7 +9,7 @@ const validarPostIdParam = require("../middlewares/validarPostIdParam");
 
 const {
     obtenerComentarios,
-    obtenerComentarioPorPost,
+    obtenerComentariosPorPost,
     obtenerComentario,
     crearComentario,
     actualizarComentario,
@@ -17,7 +17,7 @@ const {
 } = require("../controllers/comment.controller");
 
 router.get("/", obtenerComentarios);
-router.get("/post/:postId", validarPostIdParam, obtenerComentarioPorPost);
+router.get("/post/:postId", validarPostIdParam, obtenerComentariosPorPost);
 router.get("/:id", /*validateObjectId,*/ validarComentarioId, obtenerComentario);
 router.post("/", /*validarUserComentario, validarPostComentario,*/ validarComentario, crearComentario);
 router.put("/:id", /*validateObjectId,*/ validarComentarioId, validarComentario, actualizarComentario);

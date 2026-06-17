@@ -2,9 +2,12 @@ const Comment = require("../models/comment");
 
 const obtenerComentarios = async (req, res) => {
     try {
-        const comentarios = await Comment.find().select(
-            "-createdAt -updatedAt -__v"
-        );
+        const comentarios = await Comment.find()
+            //.populate("userId", "nickname")
+            //.populate("postId", "description")
+            .select(
+                "-createdAt -updatedAt -__v"
+            );
         res.status(200).json(comentarios);
     } catch (error) {
         res.status(500).json({
@@ -14,11 +17,7 @@ const obtenerComentarios = async (req, res) => {
     }
 };
 
-const obtenerComentario = async (req, res) => {
-    res.status(200).json(req.comment);
-};
-
-const obtenerComentarioPorPost = async (req, res) => {
+const obtenerComentariosPorPost = async (req, res) => {
     try {
         const visibleMonths = Number(process.env.COMMENT_VISIBLE_MONTHS) || 6;
         const fechaLimite = new Date();
@@ -31,9 +30,11 @@ const obtenerComentarioPorPost = async (req, res) => {
             createdAt: {
                 $gte: fechaLimite,
             },
-        }).select(
+        })//.populate("userId", "nickname")
+          //.populate("postId", "description")
+          .select(
             "-createdAt -updatedAt -__v"
-        );
+          );
         res.status(200).json(comentarios);
     } catch (error) {
         res.status(500).json({
@@ -41,6 +42,10 @@ const obtenerComentarioPorPost = async (req, res) => {
             error: error.message,
         });
     }
+};
+
+const obtenerComentario = async (req, res) => {
+    res.status(200).json(req.comment);
 };
 
 const crearComentario = async (req, res) => {
@@ -60,7 +65,7 @@ const actualizarComentario = async (req, res) => {
         const comentario = req.comment;
         comentario.content = req.body.content;
         await comentario.save();
-        res.status(200).json({ 
+        res.status(200).json({
             message: "Comentario actualizado con éxito",
         })
     } catch (error) {
@@ -88,7 +93,7 @@ const eliminarComentario = async (req, res) => {
 module.exports = {
     obtenerComentarios,
     obtenerComentario,
-    obtenerComentarioPorPost,
+    obtenerComentariosPorPost,
     crearComentario,
     actualizarComentario,
     eliminarComentario

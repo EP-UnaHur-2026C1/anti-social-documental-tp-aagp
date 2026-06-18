@@ -2,33 +2,20 @@ const User = require('../models/user.js');
 
 const obtenerUsers = async (req, res) => {
   try {
-    const users = await User.find()
+    const users = await User.find().select(
+      "-createdAt -updatedAt -__v"
+    )
     res.status(200).json(users);
-    if (!users) {
-      return res.status(404).json({ message: 'No se encontraron users' })
-    }
   } catch (error) {
     res.status(500).json({
       error: "Error al obtener usuarios",
+      error: error.message,
     });
   }
 };
 
-const obtenerUser = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const user = await User.findById(id).select(
-      '-createdAt -updatedAt -__v'
-    );
-    if (!user) {
-      return res.status(404).json({ message: 'User no encontrado' })
-    }
-    res.status(200).json(user);
-  } catch {
-    res.status(500).json({
-      message: 'Error al obtener user'
-    })
-  }
+const obtenerUser = (req, res) => {
+  res.status(200).json(req.user);
 };
 
 const crearUser = async (req, res) => {
@@ -38,41 +25,36 @@ const crearUser = async (req, res) => {
   } catch (error) {
     res.status(500).json({
       error: "Error al crear el usuario",
+      error: error.message,
     });
   }
 };
 
 const actualizarUser = async (req, res) => {
   try {
-    const { id } = req.params;
-    const user = await User.findByIdAndUpdate(id, req.body, {
+    const user = await User.findByIdAndUpdate(req.user._id, req.body, {
       new: true,
       runValidators: true
     });
-    if (!user) {
-      return res.status(404).json({ message: 'User no encontrado' })
-    }
     res.status(200).json(user);
   } catch (error) {
     res.status(500).json({
       error: "Error al actualizar usuario",
+      error: error.message,
     });
   }
 };
 
 const eliminarUser = async (req, res) => {
   try {
-    const { id } = req.params;
-    const delUser = User.findByIdAndDelete(id);
-    if (!delUser) {
-      return res.status(404).json({ message: 'User no encontrado' })
-    }
+    await User.findByIdAndDelete(req.user._id);
     res.status(200).json({
       message: "Usuario eliminado correctamente",
     });
   } catch (error) {
     res.status(500).json({
       error: "Error al eliminar usuario",
+      error: error.message,
     });
   }
 };

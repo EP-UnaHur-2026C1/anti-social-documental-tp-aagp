@@ -8,12 +8,13 @@ const {
 } = require("../controllers/user.controller");
 const validarUser = require("../middlewares/validarUser")
 const validateObjectId = require("../middlewares/validateObjectId")
+const validarUserId = require('../middlewares/validarUserId')
 const router = Router();
 
 router.get("/", obtenerUsers);
-router.get("/:id", validateObjectId, obtenerUser);
+router.get("/:id", validateObjectId, validarUserId, obtenerUser);
 router.post("/", validarUser, crearUser);
-router.put("/:id", validateObjectId, validarUser, actualizarUser);
-router.delete("/:id", validateObjectId, eliminarUser);
+router.put("/:id", validateObjectId, validarUserId, validarUser, actualizarUser);
+router.delete("/:id", validateObjectId, validarUserId, eliminarUser);
 
 module.exports = router;

@@ -25,7 +25,7 @@ const obtenerComentariosPorPost = async (req, res) => {
             fechaLimite.getMonth() - visibleMonths
         );
         const comentarios = await Comment.find({
-            postId: req.params.postId,
+            postId: /*req.params.postId*/req.post._id,
             visible: true,
             createdAt: {
                 $gte: fechaLimite,

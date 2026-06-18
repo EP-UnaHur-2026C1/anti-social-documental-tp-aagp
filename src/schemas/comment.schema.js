@@ -13,20 +13,26 @@ const commentSchema = Joi.object({
             "string.max": "El comentario no puede superar los 500 caracteres",
             "any.required": "El contenido es obligatorio",
         }),
-    /*userId: Joi.string()
+    userId: Joi.string()
         .hex()
         .length(24)
         .required()
         .messages({
-            "any.required": "El usuario es obligatorio.",
+            "string.base": "El ID del usuario debe ser texto.",
+            "string.hex": "El ID del usuario no es válido",
+            "string.length": "El ID del usuario debe tener 24 caracteres",
+            "any.required": "El usuario es obligatorio",
         }),
     postId: Joi.string()
         .hex()
         .length(24)
         .required()
         .messages({
-            "any.required": "El post es obligatorio.",
-        }),*/
+            "string.base": "El ID del post debe ser texto",
+            "string.hex": "El ID del post no es válido",
+            "string.length": "El ID del post debe tener 24 caracteres",
+            "any.required": "El post es obligatorio",
+        }),
 });
 
 module.exports = commentSchema;

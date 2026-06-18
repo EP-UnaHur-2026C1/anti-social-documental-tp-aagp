@@ -4,8 +4,8 @@ const validarComentarioId = async (req, res, next) => {
     try {
         const { id } = req.params;
         const comentario = await Comment.findById(id)
-            //.populate("userId", "nickname")
-            //.populate("postId", "description")
+            .populate("userId", "nickname")
+            .populate("postId", "texto fecha")
             .select(
                 "-createdAt -updatedAt -__v"
             );

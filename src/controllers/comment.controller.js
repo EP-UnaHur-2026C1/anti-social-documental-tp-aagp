@@ -3,8 +3,8 @@ const Comment = require("../models/comment");
 const obtenerComentarios = async (req, res) => {
     try {
         const comentarios = await Comment.find()
-            //.populate("userId", "nickname")
-            //.populate("postId", "description")
+            .populate("userId", "nickname")
+            .populate("postId", "texto fecha")
             .select(
                 "-createdAt -updatedAt -__v"
             );
@@ -30,11 +30,9 @@ const obtenerComentariosPorPost = async (req, res) => {
             createdAt: {
                 $gte: fechaLimite,
             },
-        })//.populate("userId", "nickname")
-          //.populate("postId", "description")
-          .select(
-            "-createdAt -updatedAt -__v"
-          );
+        }).populate("userId", "nickname")
+          .populate("postId", "texto fecha")
+          .select("-createdAt -updatedAt -__v");
         res.status(200).json(comentarios);
     } catch (error) {
         res.status(500).json({
@@ -51,7 +49,7 @@ const obtenerComentario = async (req, res) => {
 const crearComentario = async (req, res) => {
     try {
         const comentario = await Comment.create(req.body);
-        res.status(200).json(comentario);
+        res.status(201).json(comentario);
     } catch (error) {
         res.status(500).json({
             message: "Error al crear el comentario",

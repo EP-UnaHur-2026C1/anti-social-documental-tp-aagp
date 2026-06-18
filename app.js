@@ -1,7 +1,8 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const conectarDB = require("./src/config/db");
-const commentsRouter = require("./src/routes/comment.routes")
+const commentsRouter = require("./src/routes/comment.routes");
+const postsRouter = require('./src/routes/post.routes');
 
 dotenv.config();
 
@@ -16,6 +17,8 @@ app.get("/", (req, res) => {
 });
 
 app.use("/comments", commentsRouter);
+
+app.use("/posts", postsRouter);
 
 const PORT = process.env.PORT || 3000;
 

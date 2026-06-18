@@ -10,19 +10,14 @@ const postSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
-    // relacion con user, tag, img...
-    // bonus: seguidores: {[]}, mutuals: {[]}
+    
+    // relaciones
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
         required: [true, "User obligatorio."],
     },
-    image: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "PostImage", // Image (?)
-    },
     
-    //relacion NN
     tags: [
         {
             type: mongoose.Schema.Types.ObjectId,

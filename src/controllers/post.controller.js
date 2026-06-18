@@ -3,7 +3,8 @@ const { Post, PostImage, Tag } = require('../models');
 const obtenerPosts = async (req,res) => {
     try {
         const post = await Post.find()
-            .populate("user", "nickName")
+            .populate("user", "nickname")
+            .populate("tags", "nombre")
             .select("-createdAt -updatedAt -__v")
         res.status(200).json(post)
     } catch (error) {
@@ -14,22 +15,8 @@ const obtenerPosts = async (req,res) => {
     }
 }
 
-const obtenerPostPorId = async (req,res) => {
-    try {
-        const { id } = req.params
-        const post = await Post.findById(id)
-            .populate("user", "nickName")
-            .select("-createdAt -updatedAt -__v");
-        if(!post) {
-            return res.status(404).json({ message: "Post no encontrado." });
-        }
-        res.status(200).json(post);
-    } catch (error) {
-        res.status(500).json({
-            message: "Error al obtener el Post.",
-            error: error.message,
-        });
-    }
+const obtenerPostPorId = (req,res) => {
+    res.status(200).json(req.post);
 }
 
 const publicarPost = async (req,res) => {

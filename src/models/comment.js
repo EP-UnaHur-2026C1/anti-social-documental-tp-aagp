@@ -6,12 +6,14 @@ const commentSchema = new mongoose.Schema(
             type: String,
             required: [true, "El contenido es obligatorio"],
             trim: true,
+            minlength: [1, "El comentario no puede estar vacío"],
+            maxlength: [500, "El comentario no puede superar los 500 caracteres"]
         },
         visible: {
             type: Boolean,
             default: true,
         },
-        /*userId: {
+        userId: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",
             required: true,
@@ -20,10 +22,11 @@ const commentSchema = new mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: "Post",
             required: true,
-        },*/
+            index: true,
+        },
     }, {
-        timestamps: true,
-    },
+    timestamps: true,
+},
 );
 
 const Comment = mongoose.model("Comment", commentSchema);

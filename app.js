@@ -6,6 +6,8 @@ const imagesRouter = require("./src/routes/image.routes")
 const postsRouter = require("./src/routes/post.routes")
 const tagsRouter = require("./src/routes/tag.routes")
 const usersRouter = require("./src/routes/user.routes")
+const swaggerUi = require("swagger-ui-express")
+const swaggerSpec = require("./src/config/swagger")
 
 dotenv.config();
 
@@ -19,11 +21,13 @@ app.get("/", (req, res) => {
   res.send("API funcionando");
 });
 
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
 app.use("/comments", commentsRouter);
-app.use("/tag", tagsRouter);
+app.use("/tags", tagsRouter);
 app.use("/posts", postsRouter);
 app.use("/users", usersRouter);
-app.use("/postimage", imagesRouter);
+app.use("/images", imagesRouter);
 
 
 const PORT = process.env.PORT || 3000;

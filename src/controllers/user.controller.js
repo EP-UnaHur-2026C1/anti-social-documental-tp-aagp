@@ -9,7 +9,6 @@ const obtenerUsers = async (req, res) => {
   } catch (error) {
     res.status(500).json({
       error: "Error al obtener usuarios",
-      error: error.message,
     });
   }
 };
@@ -25,7 +24,6 @@ const crearUser = async (req, res) => {
   } catch (error) {
     res.status(500).json({
       error: "Error al crear el usuario",
-      error: error.message,
     });
   }
 };
@@ -40,7 +38,6 @@ const actualizarUser = async (req, res) => {
   } catch (error) {
     res.status(500).json({
       error: "Error al actualizar usuario",
-      error: error.message,
     });
   }
 };
@@ -54,7 +51,6 @@ const eliminarUser = async (req, res) => {
   } catch (error) {
     res.status(500).json({
       error: "Error al eliminar usuario",
-      error: error.message,
     });
   }
 };

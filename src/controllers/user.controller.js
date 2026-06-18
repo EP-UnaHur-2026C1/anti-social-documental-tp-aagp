@@ -14,15 +14,8 @@ const obtenerUsers = async (req, res) => {
   }
 };
 
-const obtenerUser = async (req, res) => {
-  try {
-    res.status(200).json(req.user);
-  } catch {
-    res.status(500).json({
-      message: 'Error al obtener user',
-      error: error.message,
-    })
-  }
+const obtenerUser = (req, res) => {
+  res.status(200).json(req.user);
 };
 
 const crearUser = async (req, res) => {

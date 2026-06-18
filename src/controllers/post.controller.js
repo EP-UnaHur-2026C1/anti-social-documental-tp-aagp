@@ -3,7 +3,7 @@ const { Post, PostImage, Tag } = require('../models');
 const obtenerPosts = async (req,res) => {
     try {
         const post = await Post.find()
-            .populate("user", "nickName")
+            .populate("user", "nickname")
             .select("-createdAt -updatedAt -__v")
         res.status(200).json(post)
     } catch (error) {
@@ -18,7 +18,7 @@ const obtenerPostPorId = async (req,res) => {
     try {
         const { id } = req.params
         const post = await Post.findById(id)
-            .populate("user", "nickName")
+            .populate("user", "nickname")
             .select("-createdAt -updatedAt -__v");
         if(!post) {
             return res.status(404).json({ message: "Post no encontrado." });

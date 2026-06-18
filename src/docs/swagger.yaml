@@ -1,0 +1,188 @@
+openapi: 3.0.0
+
+info:
+  title: Trabajo AAGP
+  version: 1.0.0
+  description: Documentación de la API
+
+paths:
+  /tags:
+    get:
+      summary: Obtener todos los tags
+      tags:
+        - Tag
+      responses:
+        '200':
+          description: Lista de tags
+
+    post:
+      summary: Crear un tag
+      tags:
+        - Tag
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nombre:
+                  type: string
+      responses:
+        '201':
+          description: Tag creado con éxito
+        '400':
+          description: Error de validación
+
+  /tags/{id}:
+    get:
+      summary: Obtener un tag por ID
+      tags:
+        - Tag
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID del tag
+      responses:
+        '200':
+          description: Se encontró el Tag
+        '404':
+          description: Tag no encontrado
+
+    put:
+      summary: Actualizar un tag
+      tags:
+        - Tag
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID del tag
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nombre:
+                  type: string
+      responses:
+        '200':
+          description: Tag actualizado con éxito
+        '404':
+          description: Tag no encontrado
+
+    delete:
+      summary: Eliminar un tag
+      tags:
+        - Tag
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID del tag
+      responses:
+        '200':
+          description: Tag eliminado correctamente
+        '404':
+          description: Tag no encontrado
+  /images:
+    get:
+      summary: Obtener todas las imágenes
+      tags:
+        - Images
+      responses:
+        '200':
+          description: Lista de imágenes
+
+    post:
+      summary: Crear una imagen
+      tags:
+        - Images
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                url:
+                  type: string
+                postId:
+                  type: string
+      responses:
+        '201':
+          description: Imagen creada con éxito
+        '400':
+          description: Error de validación
+
+  /images/{id}:
+    get:
+      summary: Obtener una imagen por ID
+      tags:
+        - Images
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID de la imagen
+      responses:
+        '200':
+          description: Se encontró la imagen
+        '404':
+          description: Imagen no encontrada
+
+    put:
+      summary: Actualizar una imagen
+      tags:
+        - Images
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID de la imagen
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                url:
+                  type: string
+                postId:
+                  type: string
+      responses:
+        '200':
+          description: Imagen actualizada con éxito
+        '404':
+          description: Imagen no encontrada
+
+    delete:
+      summary: Eliminar una imagen
+      tags:
+        - Images
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID de la imagen
+      responses:
+        '200':
+          description: Imagen eliminada correctamente
+        '404':
+          description: Imagen no encontrada

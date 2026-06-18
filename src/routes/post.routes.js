@@ -1,7 +1,10 @@
 const express = require("express");
 const router = express.Router();
-/* const validarPost = require('../middlewares/validarPost');
-const validarPostId = require('../middlewares/validarPostId');
+const validarId = require('../middlewares/validateObjectId');
+const validarIdPost = require('../middlewares/validarPostId');
+const validarPost = require('../middlewares/validarPost');
+
+/* 
 const { validarTagId } = require('../middlewares/validarTagId');
 const validarTag = require('../middlewares/validarTag'); */
 
@@ -18,15 +21,15 @@ const {
 } = require("../controllers/post.controller");
 
 router.get("/", obtenerPosts);
-router.get("/:id", obtenerPostPorId);
-router.post("/", publicarPost);
-router.patch("/:id", actualizarPost);
-router.delete("/:id", eliminarPost);
+router.get("/:id", validarId, validarIdPost, obtenerPostPorId);
+router.post("/", validarPost, publicarPost); // falta ValidarUserId
+router.patch("/:id", validarId, validarIdPost, validarPost, actualizarPost);
+router.delete("/:id", validarId, validarIdPost, eliminarPost);
 
 // TAG
-router.patch("/:id/tags/:tagId", agregarTagAPost)
-router.patch("/:id/tags", agregarTagsAPost)
-router.delete("/:id/tags/:tagId", quitarTagAPost)
-router.delete("/:id/tags", quitarTodosLosTagsAPost)
+router.patch("/:id/tags/:tagId", validarId, agregarTagAPost)
+router.patch("/:id/tags", validarId, agregarTagsAPost)
+router.delete("/:id/tags/:tagId", validarId, quitarTagAPost)
+router.delete("/:id/tags", validarId, quitarTodosLosTagsAPost)
 
 module.exports = router;

@@ -58,6 +58,8 @@ const eliminarPost = async (req,res) => {
     }
 }
 
+
+// Tags
 const agregarTagAPost = async (req,res) => {
     try {
         const { id } = req.params;

@@ -9,6 +9,9 @@ const usersRouter = require("./src/routes/user.routes")
 const swaggerUi = require("swagger-ui-express")
 const swaggerSpec = require("./src/config/swagger")
 
+// const multer  = require('multer')
+// const upload = multer({ dest: 'uploads/' })
+
 dotenv.config();
 
 const app = express();
@@ -29,6 +32,7 @@ app.use("/posts", postsRouter);
 app.use("/users", usersRouter);
 app.use("/images", imagesRouter);
 
+app.use("/uploads", express.static("uploads/"));
 
 const PORT = process.env.PORT || 3000;
 

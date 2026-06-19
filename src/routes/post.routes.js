@@ -3,7 +3,8 @@ const router = express.Router();
 const validarId = require('../middlewares/validateObjectId');
 const validarIdPost = require('../middlewares/validarPostId');
 const validarPost = require('../middlewares/validarPost');
-
+const validarIdUser = require('../middlewares/validarUserId');
+const validarPostCache = require('../middlewares/validarPostCache');
 /* 
 const { validarTagId } = require('../middlewares/validarTagId');
 const validarTag = require('../middlewares/validarTag'); */
@@ -20,9 +21,9 @@ const {
     quitarTodosLosTagsAPost,
 } = require("../controllers/post.controller");
 
-router.get("/", obtenerPosts);
+router.get("/", validarPostCache, obtenerPosts);
 router.get("/:id", validarId, validarIdPost, obtenerPostPorId);
-router.post("/", validarPost, publicarPost); // falta ValidarUserId
+router.post("/", validarIdUser, validarPost, publicarPost);
 router.patch("/:id", validarId, validarIdPost, validarPost, actualizarPost);
 router.delete("/:id", validarId, validarIdPost, eliminarPost);
 

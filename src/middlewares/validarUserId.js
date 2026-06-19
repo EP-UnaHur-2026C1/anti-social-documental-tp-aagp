@@ -2,7 +2,7 @@ const User = require('../models/user')
 
 const validarUserId = async (req, res, next) => {
   try {
-    const { id } = req.params
+    const id = req.params.id || req.body.user
     const user = await User.findById(id).select(
       '-createdAt -updatedAt -__v'
     );

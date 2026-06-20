@@ -26,7 +26,7 @@ const obtenerImagenPorId = async(req,res) =>{
 const crearImagen = async(req,res) =>{
     try {
         const nuevaImagen = await Image.create(req.body)
-        res.status(201).json({message: "Imagen creada con exito"})
+        res.status(201).json(nuevaImagen) // muestro imagen
     } catch (error) {
         res.status(500).json({
             message: "Error al crear la imagen",
@@ -41,7 +41,7 @@ const actualizarImagen = async(req,res) =>{
             new: true, 
             runValidators: true,
         })
-        res.status(200).json({message:"Imagen actualizada con exito"})
+        res.status(200).json(imagen) // muestro imagen
     } catch (error) {
         res.status(500).json({
             message: "Error al actualizar la imagen",

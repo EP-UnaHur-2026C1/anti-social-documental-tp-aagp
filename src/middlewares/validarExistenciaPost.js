@@ -1,6 +1,6 @@
 const Post = require("../models/post");
 
-const validarPostComentario = async (req, res, next) => {
+const validarExistenciaPost = async (req, res, next) => {
     try {
         // const id = req.body.postId;
         const { postId } = req.body;
@@ -20,5 +20,5 @@ const validarPostComentario = async (req, res, next) => {
     }
 };
 
-module.exports = validarPostComentario;
+module.exports = validarExistenciaPost;
 

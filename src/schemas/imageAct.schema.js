@@ -10,10 +10,6 @@ const imageSchemaAct = Joi.object({
             "string.empty": "La url es obligatoria",
             "string.min": "La url debe de tener al menos 5 caracteres",
             "any.required": "La url es obligatoria"
-        }),
-    postId: Joi.string()
-        .messages({
-            "number.base": "El postId debe de ser texto",
-        }) 
+        })
 })
 module.exports = imageSchemaAct

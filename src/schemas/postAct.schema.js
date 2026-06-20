@@ -15,11 +15,6 @@ const schemaPostParaActualizar = Joi.object({
             "string.max": "La descripción es muy larga.",
             "any.required": "La descripción es obligatoria."
         }),
-    user: Joi.string()
-        .regex(objectIdRegex)
-        .messages({
-            "string.pattern.base": "El ID de User es inválido.",
-        }),
     tags: Joi.array()
         .items(
             Joi.string()

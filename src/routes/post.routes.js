@@ -12,9 +12,12 @@ const validarPostParActualizar = require('../middlewares/validarPostAct')
 const { validarTagId } = require('../middlewares/validarTagId');
 const validarTag = require('../middlewares/validarTag'); */
 
-const validarTagExiste = require("../middlewares/validarExistenciaTag")
-const validarUserExiste = require("../middlewares/validarExistenciaUser")
+// VALIDAR TAG EXISTE ---> ARRAY DE TAGS NO SIRVE PARA AGREGAR UNO SOLO
+const validarTagExiste = require("../middlewares/validarExistenciaTags")
+const validarUserId = require("../middlewares/validarUserId")
 
+//
+const validarUnicoTagExistente = require("../middlewares/existenciaUnicoTag")
 const {
     obtenerPosts,
     obtenerPostPorId,
@@ -30,15 +33,15 @@ const {
 router.get("/", validarPostCache, obtenerPosts);
 router.get("/:id", validarId, validarIdPost, obtenerPostPorId);
 //validarIdUser
-router.post("/", validarPost,validarTagExiste,validarUserExiste,publicarPost);
+router.post("/", validarPost,validarTagExiste,validarUserId,publicarPost);
 // nuevo schema para actualizar
 router.patch("/:id", validarId, validarIdPost, validarPostParActualizar, actualizarPost);
 router.delete("/:id", validarId, validarIdPost, eliminarPost);
 
 // TAG
-router.patch("/:id/tags/:tagId", validarId,validarTagExiste,agregarTagAPost)
-router.patch("/:id/tags", validarId, agregarTagsAPost)
-router.delete("/:id/tags/:tagId", validarId, quitarTagAPost)
-router.delete("/:id/tags", validarId, quitarTodosLosTagsAPost)
+router.patch("/:id/tags/:tagId", validarId,validarUnicoTagExistente,agregarTagAPost) // funciona
+router.patch("/:id/tags", validarId, agregarTagsAPost) // funciona
+router.delete("/:id/tags/:tagId", validarId, quitarTagAPost) //
+router.delete("/:id/tags", validarId, quitarTodosLosTagsAPost) // funciona
 
 module.exports = router;

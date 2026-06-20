@@ -1,6 +1,6 @@
 const Tag = require("../models/tag")
 
-const validarQueTagExista = async (req, res, next) => {
+const validarQueTagsExistan = async (req, res, next) => {
     try {
         const { tags } = req.body;
         const tagsEncontrados = await Tag.find({
@@ -18,4 +18,4 @@ const validarQueTagExista = async (req, res, next) => {
         });
     }
 };
-module.exports = validarQueTagExista; 
+module.exports = validarQueTagsExistan; 

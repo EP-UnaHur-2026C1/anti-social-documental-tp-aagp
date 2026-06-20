@@ -1,4 +1,4 @@
-const { Post, PostImage, Tag } = require('../models');
+const { Post, Tag } = require('../models');
 const { redisClient } = require('../config/redis');
 
 const obtenerPosts = (req,res) => {
@@ -59,13 +59,9 @@ const eliminarPost = async (req,res) => {
 // Tags con redis agregado (sin req post)
 const agregarTagAPost = async (req,res) => {
     try {
-        const { id,tagId } = req.params;
-        const post = await Post.findById(id); // findByPK es sequelize
-        if (!post) {
-            return res.status(404).json({ message: "Post no encontrado." });
-        }
-       //post.tags.push(req.body);
-        post.tags.push(tagId) // lo anterior NO FUNCIONA    
+        const post = req.post
+        const tag = req.tag
+        post.tags.push(tag);
         await post.save();
         await redisClient.del("posts");
         const claveCache = `posts:${id}`;
@@ -81,13 +77,10 @@ const agregarTagAPost = async (req,res) => {
 
 const quitarTagAPost = async (req,res) => {
     try {
-        const { id, tagId } = req.params;
-        const post = await Post.findById(id);
-        if (!post) {
-            return res.status(404).json({ message: "Post no encontrado." });
-        }
+        const post = req.post
+        const tag = req.tag
         post.tags = post.tags.filter(
-            tag => tag.toString() !== tagId,
+            (t) => t._id.toString() !== tag._id,
         );
         await post.save();
         await redisClient.del("posts");
@@ -103,16 +96,10 @@ const quitarTagAPost = async (req,res) => {
 }
 const agregarTagsAPost = async (req,res) => {
     try {
-        const { id } = req.params;
-        const { tagsId } = req.body;
-        const post = await Post.findByIdAndUpdate(
-            id,
-            { $addToSet: { tags: tagsId } },
-            { new: true }
-        );
-        if (!post) {
-            return res.status(404).json({ message: "Post no encontrado." });
-        }
+        const post = req.post
+        const { tags } = req.body;
+        post.tags.addToSet(tags)
+        await post.save();
         await redisClient.del("posts");
         const claveCache = `posts:${id}`;
         await redisClient.del(claveCache);
@@ -126,15 +113,9 @@ const agregarTagsAPost = async (req,res) => {
 }
 const quitarTodosLosTagsAPost = async (req,res) => {
     try {
-        const { id } = req.params;
-        const post = await Post.findByIdAndUpdate(
-            id, 
-            { $set: { tags: [] } },
-            { new: true },
-        );
-        if (!post) {
-            return res.status(404).json({ message: "Post no encontrado." });
-        }
+        const post = req.post
+        post.tags.set([]);
+        await post.save();
         await redisClient.del("posts");
         const claveCache = `posts:${id}`;
         await redisClient.del(claveCache);

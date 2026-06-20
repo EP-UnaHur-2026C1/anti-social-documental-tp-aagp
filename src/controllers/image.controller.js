@@ -36,13 +36,11 @@ const crearImagen = async(req,res) =>{
 const actualizarImagen = async(req,res) =>{
     try {
         const {id} = req.params;
-        const imagen = await Image.findByIdAndUpdate(id,req.body,{
-            new: true, // devuelve el producto una vez actualizado
+        const {url} = req.body;
+        const imagen = await Image.findByIdAndUpdate(id,{url},{
+            new: true, 
             runValidators: true,
         })
-        if(!imagen){
-            return res.status(404).json({message:"La imagen no fue encontrada"})
-        }
         res.status(200).json({message:"Imagen actualizada con exito"})
     } catch (error) {
         res.status(500).json({
@@ -54,9 +52,6 @@ const  eliminarImagen = async(req,res) =>{
     try {
         const {id} = req.params;
         const imagenEliminada = await Image.findByIdAndDelete(id)
-        if(!imagenEliminada){
-            return res.status(404).json({message: "La imagen no fue encontrada"})
-        }
         res.status(200).json({message: "Imagen eliminada con exito"})
     } catch (error) {
         res.status(500).json({

@@ -14,9 +14,6 @@ const obtenerTagPorId = async(req,res) =>{
     try {
         const {id} = req.params;
         const tag = await Tag.findById(id).select("-createdAt -updatedAt -__v")
-        if(!tag){
-            return res.status(404).json({message: "El tag no fue encontrado"})
-        }
         res.status(200).json(tag)
     } catch (error) {
        res.status(500).json({
@@ -43,9 +40,6 @@ const actualizarTag = async(req,res) =>{
             new: true, 
             runValidators: true,
         })
-        if(!tag){
-            return res.status(404).json({message: "El tag no fue encontrado"})
-        }
         res.status(200).json({message: "Tag actualizado con exito"})
     } catch (error) {
         res.status(500).json({
@@ -57,9 +51,6 @@ const eliminarTag = async(req,res) =>{
     try {
         const {id} = req.params;
         const tagEliminado = await Tag.findByIdAndDelete(id)
-        if(!tagEliminado){
-            return res.status(404).json({message: "Tag no encontrado"})
-        }
         res.status(200).json({message: "Tag eliminado con exito"})
     } catch (error) {
         res.status(500).json({

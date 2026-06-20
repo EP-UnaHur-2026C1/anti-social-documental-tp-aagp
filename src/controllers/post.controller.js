@@ -44,8 +44,9 @@ const actualizarPost = async (req,res) => {
         });
     }
 }
-
-const eliminarPost = async (req,res) => {
+/*
+COMENTADO POR EL MOMENTO PORQUE NO FUNCIONA
+//const eliminarPost = async (req,res) => {
     try {
         const post = req.post;
         await post.deleteOne();
@@ -60,7 +61,24 @@ const eliminarPost = async (req,res) => {
         });
     }
 }
+*/
+const eliminarPost = async (req, res) => {
+    try {
+        await Post.findByIdAndDelete(req.post._id || req.params.id);
 
+        await redisClient.del("posts");
+
+        const claveCache = `posts:${req.params.id}`;
+        await redisClient.del(claveCache);
+
+        res.status(200).json({ message: "Este post ha sido eliminado." });
+    } catch (error) {
+        res.status(500).json({
+            message: "Error al eliminar el post.",
+            error: error.message,
+        });
+    }
+};
 
 // Tags con redis agregado (sin req post)
 const agregarTagAPost = async (req,res) => {

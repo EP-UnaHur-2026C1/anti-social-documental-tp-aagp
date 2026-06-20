@@ -1,6 +1,6 @@
 const Joi = require('joi')
 
-const imageSchemaa = Joi.object({
+const imageSchemaAct = Joi.object({
     url: Joi.string()
         .min(1)
         .max(100)
@@ -12,10 +12,8 @@ const imageSchemaa = Joi.object({
             "any.required": "La url es obligatoria"
         }),
     postId: Joi.string()
-        .required()
         .messages({
             "number.base": "El postId debe de ser texto",
-            "any.required": "El postId es obligatoria"
         }) 
 })
-module.exports = imageSchemaa
+module.exports = imageSchemaAct

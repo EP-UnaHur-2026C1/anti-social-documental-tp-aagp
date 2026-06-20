@@ -5,9 +5,15 @@ const validarIdPost = require('../middlewares/validarPostId');
 const validarPost = require('../middlewares/validarPost');
 const validarIdUser = require('../middlewares/validarUserId');
 const validarPostCache = require('../middlewares/validarPostCache');
+
+// nuevo middleware para actualizar sin el requeried del user
+const validarPostParActualizar = require('../middlewares/validarPostAct')
 /* 
 const { validarTagId } = require('../middlewares/validarTagId');
 const validarTag = require('../middlewares/validarTag'); */
+
+const validarTagExiste = require("../middlewares/validarExistenciaTag")
+const validarUserExiste = require("../middlewares/validarExistenciaUser")
 
 const {
     obtenerPosts,
@@ -23,12 +29,14 @@ const {
 
 router.get("/", validarPostCache, obtenerPosts);
 router.get("/:id", validarId, validarIdPost, obtenerPostPorId);
-router.post("/", validarIdUser, validarPost, publicarPost);
-router.patch("/:id", validarId, validarIdPost, validarPost, actualizarPost);
+//validarIdUser
+router.post("/", validarPost,validarTagExiste,validarUserExiste,publicarPost);
+// nuevo schema para actualizar
+router.patch("/:id", validarId, validarIdPost, validarPostParActualizar, actualizarPost);
 router.delete("/:id", validarId, validarIdPost, eliminarPost);
 
 // TAG
-router.patch("/:id/tags/:tagId", validarId, agregarTagAPost)
+router.patch("/:id/tags/:tagId", validarId,validarTagExiste,agregarTagAPost)
 router.patch("/:id/tags", validarId, agregarTagsAPost)
 router.delete("/:id/tags/:tagId", validarId, quitarTagAPost)
 router.delete("/:id/tags", validarId, quitarTodosLosTagsAPost)

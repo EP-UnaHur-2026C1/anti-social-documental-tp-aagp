@@ -2,7 +2,7 @@ const User = require("../models/user");
 
 const validarUserComentario = async (req, res, next) => {
     try {
-        const { userId } = req.body;
+        const { userId } = req.body.user;
         const user = await User.findById(userId);
         if (!user) {
             return res.status(404).json({
@@ -20,3 +20,4 @@ const validarUserComentario = async (req, res, next) => {
 };
 
 module.exports = validarUserComentario;
+

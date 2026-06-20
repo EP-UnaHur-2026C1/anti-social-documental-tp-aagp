@@ -2,10 +2,17 @@ const { Router } = require("express");
 const router = Router();
 const validarComentario = require("../middlewares/validarComentario");
 const validarComentarioId = require("../middlewares/validarComentarioId");
-const validarUserComentario = require("../middlewares/validarUserComentario");
-const validarPostComentario = require("../middlewares/validarPostComentario");
-const validarPostIdParam = require("../middlewares/validarPostIdParam");
 const validateObjectId = require("../middlewares/validateObjectId");
+
+
+// CAMBIAMOS PARA UNIFICARLOS
+//const validarUserComentario = require("../middlewares/validarUserComentario");
+const validarExistenciaUser = require("../middlewares/validarExistenciaUser")
+//const validarPostComentario = require("../middlewares/validarPostComentario");
+const validarExistenciaPost = require("../middlewares/validarExistenciaPost")
+// este dejarlo porque es diferente al validateObjectID
+const validarPostIdParam = require("../middlewares/validarPostIdParam");
+
 
 const {
     obtenerComentarios,
@@ -19,7 +26,7 @@ const {
 router.get("/", obtenerComentarios);
 router.get("/post/:postId", validarPostIdParam, obtenerComentariosPorPost);
 router.get("/:id", validateObjectId, validarComentarioId, obtenerComentario);
-router.post("/", /*validarUserComentario, validarPostComentario,*/ validarComentario, crearComentario);
+router.post("/", validarExistenciaUser, validarExistenciaPost, validarComentario, crearComentario);
 router.put("/:id", validateObjectId, validarComentarioId, validarComentario, actualizarComentario);
 router.delete("/:id", validateObjectId, validarComentarioId, eliminarComentario);
 

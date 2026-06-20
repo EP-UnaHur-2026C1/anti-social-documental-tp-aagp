@@ -7,14 +7,12 @@ const obtenerPosts = (req,res) => {
         posts: req.posts
     })
 }
-
 const obtenerPostPorId = (req,res) => {
     res.status(200).json({
         origen: req.origen,
         post: req.post
     });
 }
-
 const publicarPost = async (req,res) => {
     try {
         const newPost = await Post.create(req.body);
@@ -27,7 +25,6 @@ const publicarPost = async (req,res) => {
         });
     }
 }
-
 const actualizarPost = async (req,res) => {
     try {
         const post = req.post;
@@ -44,7 +41,6 @@ const actualizarPost = async (req,res) => {
         });
     }
 }
-
 const eliminarPost = async (req,res) => {
     try {
         const post = req.post;
@@ -60,17 +56,16 @@ const eliminarPost = async (req,res) => {
         });
     }
 }
-
-
 // Tags con redis agregado (sin req post)
 const agregarTagAPost = async (req,res) => {
     try {
-        const { id } = req.params;
-        const post = await Post.findByPk(id);
+        const { id,tagId } = req.params;
+        const post = await Post.findById(id); // findByPK es sequelize
         if (!post) {
             return res.status(404).json({ message: "Post no encontrado." });
         }
-        post.tags.push(req.body);
+       //post.tags.push(req.body);
+        post.tags.push(tagId) // lo anterior NO FUNCIONA    
         await post.save();
         await redisClient.del("posts");
         const claveCache = `posts:${id}`;
@@ -92,7 +87,7 @@ const quitarTagAPost = async (req,res) => {
             return res.status(404).json({ message: "Post no encontrado." });
         }
         post.tags = post.tags.filter(
-            (tag) => tag._id.toString() !== tagId,
+            tag => tag.toString() !== tagId,
         );
         await post.save();
         await redisClient.del("posts");
@@ -106,7 +101,6 @@ const quitarTagAPost = async (req,res) => {
         });
     }
 }
-
 const agregarTagsAPost = async (req,res) => {
     try {
         const { id } = req.params;
@@ -130,7 +124,6 @@ const agregarTagsAPost = async (req,res) => {
         });
     }
 }
-
 const quitarTodosLosTagsAPost = async (req,res) => {
     try {
         const { id } = req.params;
@@ -150,7 +143,6 @@ const quitarTodosLosTagsAPost = async (req,res) => {
         res.status(500).json({error:"No fue posible quitar todos los Tags del Post."})
     }
 }
-
 module.exports = {
     obtenerPosts,
     obtenerPostPorId,

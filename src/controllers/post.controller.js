@@ -31,8 +31,10 @@ const publicarPost = async (req,res) => {
 const actualizarPost = async (req,res) => {
     try {
         const post = req.post;
-        post.set(req.body)
-        await post.save();
+        await Post.updateOne(
+            { _id: post._id },
+            { $set: req.body }
+        );
         await redisClient.del("posts");
         const claveCache = `posts:${post._id}`;
         await redisClient.del(claveCache);
@@ -48,7 +50,9 @@ const actualizarPost = async (req,res) => {
 const eliminarPost = async (req,res) => {
     try {
         const post = req.post;
-        await post.deleteOne();
+        await Post.deleteOne(
+            { _id: post._id }
+        );
         await redisClient.del("posts");
         const claveCache = `posts:${post._id}`;
         await redisClient.del(claveCache);

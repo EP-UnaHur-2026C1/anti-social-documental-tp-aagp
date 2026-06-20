@@ -6,9 +6,9 @@ const validarIdUser = require('../middlewares/validarUserId');
 const validarPostCache = require('../middlewares/validarPostCache');
 
 //tags imports
-const validarTagId = require('../middlewares/validarTagId');
-const validarTagsArray = require('../middlewares/validarTagsPost');
-const validarUpdatePost = require('../middlewares/validarPostAct');
+//const validarTagId = require('../middlewares/validarTagId');
+//const validarTagsArray = require('../middlewares/validarTagsPost');
+//const validarUpdatePost = require('../middlewares/validarPostAct');
 
 const {
     obtenerPosts,
@@ -25,13 +25,13 @@ const {
 router.get("/", validarPostCache, obtenerPosts);
 router.get("/:id", validarIdPost, obtenerPostPorId);
 router.post("/", validarIdUser, validarPost, publicarPost);
-router.patch("/:id", validarIdPost, validarPost, actualizarPost);
+router.patch("/:id", validarIdPost, validarPost, actualizarPost); // validarUpdatePost
 router.delete("/:id", validarIdPost, eliminarPost);
 
 // TAG
-router.patch("/:id/tags/:tagId", validarIdPost, validarTagId, agregarTagAPost)
-router.patch("/:id/tags", validarIdPost, validarTagsArray, agregarTagsAPost)
-router.delete("/:id/tags/:tagId", validarIdPost, validarTagId, quitarTagAPost)
-router.delete("/:id/tags", validarIdPost, validarTagsArray, quitarTodosLosTagsAPost)
+//router.patch("/:id/tags/:tagId", validarIdPost, validarTagId, agregarTagAPost)
+//router.patch("/:id/tags", validarIdPost, validarTagsArray, agregarTagsAPost)
+//router.delete("/:id/tags/:tagId", validarIdPost, validarTagId, quitarTagAPost)
+//router.delete("/:id/tags", validarIdPost, validarTagsArray, quitarTodosLosTagsAPost)
 
 module.exports = router;

@@ -25,7 +25,7 @@ const publicarPost = async (req,res) => {
         });
     }
 }
-const actualizarPost = async (req,res) => {
+/*const actualizarPost = async (req,res) => {
     try {
         const post = req.post;
         post.set(req.body)
@@ -41,7 +41,26 @@ const actualizarPost = async (req,res) => {
         });
     }
 }
-const eliminarPost = async (req,res) => {
+*/
+const actualizarPost = async (req,res) => {
+    try {
+        const post = req.post;
+        await Post.updateOne(
+            { _id: post._id },
+            { $set: req.body }
+        );
+        await redisClient.del("posts");
+        const claveCache = `posts:${post._id}`;
+        await redisClient.del(claveCache);
+        res.status(200).json(post);
+    } catch (error) {
+        res.status(500).json({
+            message: "Error al actualizar post.",
+            error: error.message,
+        });
+    }
+}
+/*const eliminarPost = async (req,res) => {
     try {
         const post = req.post;
         await post.deleteOne();
@@ -56,6 +75,25 @@ const eliminarPost = async (req,res) => {
         });
     }
 }
+*/
+const eliminarPost = async (req,res) => {
+    try {
+        const post = req.post;
+        await Post.deleteOne(
+            { _id: post._id }
+        );
+        await redisClient.del("posts");
+        const claveCache = `posts:${post._id}`;
+        await redisClient.del(claveCache);
+        res.status(200).json({ message: "Este post ha sido eliminado." });
+    } catch (error) {
+        res.status(500).json({
+            message: "Error al eliminar el post.",
+            error: error.message,
+        });
+    }
+}
+
 // Tags con redis agregado (sin req post)
 const agregarTagAPost = async (req,res) => {
     try {

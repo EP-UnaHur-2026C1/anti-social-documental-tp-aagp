@@ -5,19 +5,15 @@ const validarIdPost = require('../middlewares/validarPostId');
 const validarPost = require('../middlewares/validarPost');
 const validarIdUser = require('../middlewares/validarUserId');
 const validarPostCache = require('../middlewares/validarPostCache');
-
-// nuevo middleware para actualizar sin el requeried del user
 const validarPostParActualizar = require('../middlewares/validarPostAct')
 /* 
 const { validarTagId } = require('../middlewares/validarTagId');
 const validarTag = require('../middlewares/validarTag'); */
 
-// VALIDAR TAG EXISTE ---> ARRAY DE TAGS NO SIRVE PARA AGREGAR UNO SOLO
 const validarTagExiste = require("../middlewares/validarExistenciaTags")
 const validarUserId = require("../middlewares/validarUserId")
-
-//
 const validarUnicoTagExistente = require("../middlewares/existenciaUnicoTag")
+
 const {
     obtenerPosts,
     obtenerPostPorId,
@@ -32,11 +28,12 @@ const {
 
 router.get("/", validarPostCache, obtenerPosts);
 router.get("/:id", validarId, validarIdPost, obtenerPostPorId);
-//validarIdUser
 router.post("/", validarPost,validarTagExiste,validarUserId,publicarPost);
-// nuevo schema para actualizar
 router.patch("/:id", validarId, validarIdPost, validarPostParActualizar, actualizarPost);
 router.delete("/:id", validarId, validarIdPost, eliminarPost);
+
+
+
 
 // TAG
 router.patch("/:id/tags/:tagId", validarId,validarUnicoTagExistente,agregarTagAPost) // funciona

@@ -63,9 +63,7 @@ const actualizarComentario = async (req, res) => {
         const comentario = req.comment;
         comentario.content = req.body.content;
         await comentario.save();
-        res.status(200).json({
-            message: "Comentario actualizado con éxito",
-        })
+        res.status(200).json(comentario)
     } catch (error) {
         res.status(500).json({
             message: "Error al actualizar el comentario",

@@ -8,6 +8,7 @@ const tagsRouter = require("./src/routes/tag.routes")
 const usersRouter = require("./src/routes/user.routes")
 const swaggerUi = require("swagger-ui-express")
 const swaggerSpec = require("./src/config/swagger")
+const { conectarRedis } = require('./src/config/redis');
 
 dotenv.config();
 
@@ -16,6 +17,7 @@ const app = express();
 app.use(express.json());
 
 conectarDB();
+conectarRedis();
 
 app.get("/", (req, res) => {
   res.send("API funcionando");

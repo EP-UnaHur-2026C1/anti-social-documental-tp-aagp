@@ -13,6 +13,7 @@ const commentSchema = Joi.object({
             "string.max": "El comentario no puede superar los 500 caracteres",
             "any.required": "El contenido es obligatorio",
         }),
+    visible: Joi.boolean(), // agregado si no no te deja crear
     userId: Joi.string()
         .hex()
         .length(24)

@@ -98,35 +98,17 @@ const eliminarPost = async (req,res) => {
     }
 }
 
-// Tags con redis agregado (sin req post)
-const agregarTagAPost = async (req,res) => {
-    try {
-        const post = req.post
-        const tag = req.tag
-        post.tags.push(tag);
-        await post.save();
-        await redisClient.del("posts");
-        const claveCache = `posts:${id}`;
-        await redisClient.del(claveCache);
-        res.status(201).json({ message: "Tag agregado al Post." });
-    } catch (error) {
-        res.status(500).json({
-            message: "Error al agregar tag al post.",
-            error: error.message,
-        });
-    }
-}
-
+// Tags con redis agregado
 const quitarTagAPost = async (req,res) => {
     try {
         const post = req.post
         const tag = req.tag
-        post.tags = post.tags.filter(
-            (t) => t._id.toString() !== tag._id,
+        await Post.updateOne(
+            { _id: post._id },
+            { $pull: { tags: tag._id } }
         );
-        await post.save();
         await redisClient.del("posts");
-        const claveCache = `posts:${id}`;
+        const claveCache = `posts:${post._id}`;
         await redisClient.del(claveCache);
         res.status(200).json({ message: "Tag eliminado del post." });
     } catch (error) {
@@ -136,14 +118,17 @@ const quitarTagAPost = async (req,res) => {
         });
     }
 }
+
 const agregarTagsAPost = async (req,res) => {
     try {
         const post = req.post
         const { tags } = req.body;
-        post.tags.addToSet(tags)
-        await post.save();
+        await Post.updateOne(
+            { _id: post._id },
+            { $addToSet: { tags: { $each: tags } } }
+        );
         await redisClient.del("posts");
-        const claveCache = `posts:${id}`;
+        const claveCache = `posts:${post._id}`;
         await redisClient.del(claveCache);
         res.status(201).json({ message: "Tags agregados al Post." });
     } catch (error) {
@@ -153,26 +138,29 @@ const agregarTagsAPost = async (req,res) => {
         });
     }
 }
+
 const quitarTodosLosTagsAPost = async (req,res) => {
     try {
         const post = req.post
-        post.tags.set([]);
-        await post.save();
+        await Post.updateOne(
+            { _id: post._id },
+            { $set: { tags: [] } }
+        );
         await redisClient.del("posts");
-        const claveCache = `posts:${id}`;
+        const claveCache = `posts:${post._id}`;
         await redisClient.del(claveCache);
         res.status(200).json({message:"Se quitaron todos los Tags del Post."})
     } catch (error) {
         res.status(500).json({error:"No fue posible quitar todos los Tags del Post."})
     }
 }
+
 module.exports = {
     obtenerPosts,
     obtenerPostPorId,
     publicarPost,
     actualizarPost,
     eliminarPost,
-    agregarTagAPost,
     quitarTagAPost,
     agregarTagsAPost,
     quitarTodosLosTagsAPost,

@@ -1,18 +1,16 @@
 const Joi = require("joi");
 
 const schemaTagsPost = Joi.object({
-    tagsIds: Joi.array()
+    tags: Joi.array()
         .items(
-            Joi.number()
-                .integer()
-                .positive()
+            Joi.string().regex(/^[0-9a-fA-F]{24}$/)
         )
         .min(1)
         .required()
         .messages({
-            "array.base": "tagsIds debe ser un arreglo.",
+            "array.base": "tags debe ser un arreglo.",
             "array.min": "Debe enviar al menos un tag.",
-            "any.required": "tagsIds es obligatorio."
+            "any.required": "tags es obligatorio."
         })
 });
 

@@ -18,7 +18,6 @@ const {
     publicarPost,
     actualizarPost,
     eliminarPost,
-    agregarTagAPost,
     quitarTagAPost,
     agregarTagsAPost,
     quitarTodosLosTagsAPost,

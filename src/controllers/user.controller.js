@@ -1,4 +1,4 @@
-const User = require('../models/user.js');
+const { User, Post } = require('../models');
 
 const obtenerUsers = async (req, res) => {
   try {
@@ -13,8 +13,30 @@ const obtenerUsers = async (req, res) => {
   }
 };
 
-const obtenerUser = (req, res) => {
-  res.status(200).json(req.user);
+const obtenerUser = async (req, res) => {
+  try {
+    const user = req.user;
+    const posts = await Post.find({
+      user: user._id
+    })
+      .populate("tags", "nombre")
+      .select("-createdAt -updatedAt -__v");
+    const respuesta = {
+      ...(typeof user.toObject === "function"
+        ? user.toObject()
+        : user),
+      posts
+    };
+    res.status(200).json({
+      origen: req.origen,
+      user: respuesta
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error al obtener usuario.",
+      error: error.message
+    });
+  }
 };
 
 const crearUser = async (req, res) => {

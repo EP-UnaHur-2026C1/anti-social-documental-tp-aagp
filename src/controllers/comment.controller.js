@@ -1,4 +1,5 @@
 const Comment = require("../models/comment");
+const { obtenerComentariosVisibles } = require("../utils/commentsFilter");
 
 const obtenerComentarios = async (req, res) => {
     try {
@@ -19,20 +20,19 @@ const obtenerComentarios = async (req, res) => {
 
 const obtenerComentariosPorPost = async (req, res) => {
     try {
-        const visibleMonths = Number(process.env.COMMENT_VISIBLE_MONTHS) || 6;
-        const fechaLimite = new Date();
-        fechaLimite.setMonth(
-            fechaLimite.getMonth() - visibleMonths
-        );
-        const comentarios = await Comment.find({
-            postId: /*req.params.postId*/req.post._id,
-            visible: true,
-            createdAt: {
-                $gte: fechaLimite,
+        const comentarios = await obtenerComentariosVisibles({
+            postId: req.params.postId
+        });
+        await Comment.populate(comentarios, [
+            {
+                path: "userId",
+                select: "nickname"
             },
-        }).populate("userId", "nickname")
-          .populate("postId", "texto fecha")
-          .select("-createdAt -updatedAt -__v");
+            {
+                path: "postId",
+                select: "texto fecha"
+            }
+        ]);
         res.status(200).json(comentarios);
     } catch (error) {
         res.status(500).json({

@@ -1,4 +1,5 @@
 const Joi = require("joi");
+
 const commentSchemaAct = Joi.object({
     content: Joi.string()
         .trim()

@@ -6,24 +6,21 @@ const postSchema = new mongoose.Schema({
         required: [true, "La descripción es obligatoria."],
         trim: true
     },
-    fecha : {
+    fecha: {
         type: Date,
         default: Date.now
     },
-    
-    // relaciones
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
         required: [true, "User obligatorio."],
     },
-    
-    tags: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Tag",
-        },
-    ]
+    tags: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Tag",
+    },
+}, {
+    timestamps: true
 });
 
 const Post = mongoose.model('Post', postSchema);

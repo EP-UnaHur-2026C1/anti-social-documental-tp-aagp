@@ -9,10 +9,6 @@ const commentSchema = new mongoose.Schema(
             minlength: [1, "El comentario no puede estar vacío"],
             maxlength: [500, "El comentario no puede superar los 500 caracteres"]
         },
-        visible: {
-            type: Boolean,
-            default: true,
-        },
         userId: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",
@@ -28,6 +24,23 @@ const commentSchema = new mongoose.Schema(
     timestamps: true,
 },
 );
+
+commentSchema.virtual("visible").get(function () {
+    const visibleMonths = Number(process.env.COMMENT_VISIBLE_MONTHS) || 6;
+    const fechaLimite = new Date();
+    fechaLimite.setMonth(
+        fechaLimite.getMonth() - visibleMonths
+    );
+    return this.createdAt >= fechaLimite;
+});
+
+commentSchema.set("toJSON", {
+    virtuals: true,
+});
+
+commentSchema.set("toObject", {
+    virtuals: true,
+});
 
 const Comment = mongoose.model("Comment", commentSchema);
 

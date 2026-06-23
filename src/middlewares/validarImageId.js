@@ -4,8 +4,6 @@ const validarImagenId = async(req,res,next) =>{
     try {
         const {id} = req.params;
         const imagen = await Image.findById(id);
-
-        // verifico si la imagen no existe
         if(!imagen){
             return res.status(404).json({
                 message: "La imagen no fue encontrada"

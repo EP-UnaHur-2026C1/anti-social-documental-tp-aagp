@@ -1,7 +1,7 @@
 const schemaTagsPost = require("../schemas/postTag.schema");
 
 const validarTagsPost = (req,res,next) => {
-    const { error } = schemaPostTags.validate(req.body);
+    const { error } = schemaTagsPost.validate(req.body);
 
     if (error) {
         return res.status(400).json({

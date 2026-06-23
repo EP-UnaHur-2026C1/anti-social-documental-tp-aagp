@@ -11,7 +11,7 @@ const validarQueExisteUnUnicoTag = async (req, res, next) => {
                 message: "Tag no encontrado"
             });
         }
-
+        req.tag = tag
         next();
     } catch (error) {
         res.status(500).json({

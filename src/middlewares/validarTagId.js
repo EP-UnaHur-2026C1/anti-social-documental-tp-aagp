@@ -7,7 +7,7 @@ const validarTagId = async(req,res,next) => {
 
         if(!tag){
             return res.status(404).json({
-                message: "El tag no fue encontrada"
+                message: "El tag no fue encontrado"
             })
         }
         req.tag = tag;

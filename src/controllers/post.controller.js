@@ -7,7 +7,6 @@ const obtenerPosts = (req,res) => {
         posts: req.posts
     })
 }
-
 const obtenerPostPorId = (req,res) => {
     res.status(200).json({
         origen: req.origen,
@@ -65,7 +64,6 @@ const eliminarPost = async (req,res) => {
     }
 }
 
-
 // Tags con redis agregado (sin req post)
 const agregarTagAPost = async (req,res) => {
     try {
@@ -104,7 +102,6 @@ const quitarTagAPost = async (req,res) => {
         });
     }
 }
-
 const agregarTagsAPost = async (req,res) => {
     try {
         const post = req.post
@@ -122,7 +119,6 @@ const agregarTagsAPost = async (req,res) => {
         });
     }
 }
-
 const quitarTodosLosTagsAPost = async (req,res) => {
     try {
         const post = req.post
@@ -136,7 +132,6 @@ const quitarTodosLosTagsAPost = async (req,res) => {
         res.status(500).json({error:"No fue posible quitar todos los Tags del Post."})
     }
 }
-
 module.exports = {
     obtenerPosts,
     obtenerPostPorId,

@@ -3,7 +3,7 @@ const User = require('../models/user.js');
 const obtenerUsers = async (req, res) => {
   try {
     const users = await User.find().select(
-      "-createdAt -updatedAt -__v"
+      "-email -password -createdAt -updatedAt -__v"
     )
     res.status(200).json(users);
   } catch (error) {

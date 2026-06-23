@@ -37,7 +37,8 @@ const actualizarPost = async (req,res) => {
         await redisClient.del("posts");
         const claveCache = `posts:${post._id}`;
         await redisClient.del(claveCache);
-        res.status(200).json(post);
+        const postActualizado = {...post.toObject(), ...req.body}
+        res.status(200).json(postActualizado);
     } catch (error) {
         res.status(500).json({
             message: "Error al actualizar post.",

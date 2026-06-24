@@ -5,7 +5,6 @@ const {
   crearUser,
   actualizarUser,
   eliminarUser,
-  obtenerUserPosts,
   obtenerUserComments,
   obtenerPostPorUsuario
 } = require("../controllers/user.controller");

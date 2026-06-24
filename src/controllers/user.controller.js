@@ -1,4 +1,5 @@
-const User = require('../models/user.js');
+const { User, Post } = require('../models');
+const { agregarRelacionesPosts } = require("../utils/agregarRelacionesPosts");
 
 const obtenerUsers = async (req, res) => {
   try {
@@ -8,13 +9,37 @@ const obtenerUsers = async (req, res) => {
     res.status(200).json(users);
   } catch (error) {
     res.status(500).json({
-      error: "Error al obtener usuarios",
+      message: "Error al obtener usuarios",
+      error: error.message
     });
   }
 };
 
-const obtenerUser = (req, res) => {
-  res.status(200).json(req.user);
+const obtenerUser = async (req, res) => {
+  try {
+    const user = req.user;
+    const posts = await Post.find({
+      user: user._id
+    })
+      .populate("tags", "nombre")
+      .select("-createdAt -updatedAt -__v -user");
+    const postsConRelaciones = await agregarRelacionesPosts(posts);
+    const respuesta = {
+      ...(typeof user.toObject === "function"
+        ? user.toObject()
+        : user),
+      posts: postsConRelaciones
+    };
+    res.status(200).json({
+      origen: req.origen,
+      user: respuesta
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error al obtener usuario.",
+      error: error.message
+    });
+  }
 };
 
 const crearUser = async (req, res) => {
@@ -23,7 +48,8 @@ const crearUser = async (req, res) => {
     res.status(201).json(newUser);
   } catch (error) {
     res.status(500).json({
-      error: "Error al crear el usuario",
+      message: "Error al crear el usuario",
+      error: error.message
     });
   }
 };

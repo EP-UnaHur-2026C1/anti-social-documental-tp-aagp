@@ -1,5 +1,5 @@
 const Comment = require("../models/comment");
-const { obtenerComentariosVisibles } = require("../utils/commentsFilter");
+const { obtenerComentariosVisibles } = require("../utils/obtenerComentariosVisibles");
 
 const obtenerComentarios = async (req, res) => {
     try {

@@ -81,10 +81,38 @@ const eliminarUser = async (req, res) => {
   }
 };
 
+//nuevo
+
+const obtenerUserPosts = async (req, res) => {
+  try {
+    // no muestra images
+    const userPosts = await Post.find({ user: req.user._id }).populate({ path: 'tags', select: "-createdAt -updatedAt -__v" }).select("-__v")
+
+    res.status(200).json(userPosts)
+  } catch (error) {
+    res.status(500).json({
+      error: "Error al obtener posts del usuario"
+    })
+  }
+}
+
+const obtenerUserComments = async (req, res) => {
+  try {
+    const userComments = await Comment.find({ userId: req.user._id }).populate({path: 'postId', select: '-texto -user -tags -__v'}).select('-visible -__v')
+    res.status(500).json(userComments)
+  } catch (error) {
+    res.status(500).json({
+      error: "Error al obtener comments del usuario"
+    })
+  }
+}
+
 module.exports = {
   obtenerUsers,
   obtenerUser,
   crearUser,
   actualizarUser,
-  eliminarUser
+  eliminarUser,
+  obtenerUserPosts,
+  obtenerUserComments
 };

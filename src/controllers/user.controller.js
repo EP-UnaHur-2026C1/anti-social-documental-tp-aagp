@@ -18,17 +18,10 @@ const obtenerUsers = async (req, res) => {
 const obtenerUser = async (req, res) => {
   try {
     const user = req.user;
-    const posts = await Post.find({
-      user: user._id
-    })
-      .populate("tags", "nombre")
-      .select("-createdAt -updatedAt -__v -user");
-    const postsConRelaciones = await agregarRelacionesPosts(posts);
     const respuesta = {
       ...(typeof user.toObject === "function"
         ? user.toObject()
         : user),
-      posts: postsConRelaciones
     };
     res.status(200).json({
       origen: req.origen,
@@ -81,24 +74,27 @@ const eliminarUser = async (req, res) => {
   }
 };
 
-//nuevo
-
-const obtenerUserPosts = async (req, res) => {
+const obtenerPostPorUsuario = async (req, res) => {
   try {
-    // no muestra images
-    const userPosts = await Post.find({ user: req.user._id }).populate({ path: 'tags', select: "-createdAt -updatedAt -__v" }).select("-__v")
-
-    res.status(200).json(userPosts)
+    const { id } = req.params;
+    const posts = await Post.find({ user: id })
+      .populate("tags", "nombre")
+      .select("-createdAt -updatedAt -__v -user");
+    const postsConRelaciones = await agregarRelacionesPosts(posts);
+    res.status(200).json({
+      posts: postsConRelaciones
+    });
   } catch (error) {
     res.status(500).json({
-      error: "Error al obtener posts del usuario"
-    })
+      message: "Error al obtener posts del usuario",
+      error: error.message
+    });
   }
 }
 
 const obtenerUserComments = async (req, res) => {
   try {
-    const userComments = await Comment.find({ userId: req.user._id }).populate({path: 'postId', select: '-texto -user -tags -__v'}).select('-visible -__v')
+    const userComments = await Comment.find({ userId: req.user._id }).populate({ path: 'postId', select: '-texto -user -tags -__v' }).select('-visible -__v')
     res.status(500).json(userComments)
   } catch (error) {
     res.status(500).json({
@@ -113,6 +109,6 @@ module.exports = {
   crearUser,
   actualizarUser,
   eliminarUser,
-  obtenerUserPosts,
-  obtenerUserComments
+  obtenerUserComments,
+  obtenerPostPorUsuario
 };

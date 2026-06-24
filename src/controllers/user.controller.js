@@ -1,4 +1,5 @@
 const { User, Post } = require('../models');
+const { agregarRelacionesPosts } = require("../utils/agregarRelacionesPosts");
 
 const obtenerUsers = async (req, res) => {
   try {
@@ -8,7 +9,8 @@ const obtenerUsers = async (req, res) => {
     res.status(200).json(users);
   } catch (error) {
     res.status(500).json({
-      error: "Error al obtener usuarios",
+      message: "Error al obtener usuarios",
+      error: error.message
     });
   }
 };
@@ -20,12 +22,13 @@ const obtenerUser = async (req, res) => {
       user: user._id
     })
       .populate("tags", "nombre")
-      .select("-createdAt -updatedAt -__v");
+      .select("-createdAt -updatedAt -__v -user");
+    const postsConRelaciones = await agregarRelacionesPosts(posts);
     const respuesta = {
       ...(typeof user.toObject === "function"
         ? user.toObject()
         : user),
-      posts
+      posts: postsConRelaciones
     };
     res.status(200).json({
       origen: req.origen,
@@ -45,7 +48,8 @@ const crearUser = async (req, res) => {
     res.status(201).json(newUser);
   } catch (error) {
     res.status(500).json({
-      error: "Error al crear el usuario",
+      message: "Error al crear el usuario",
+      error: error.message
     });
   }
 };

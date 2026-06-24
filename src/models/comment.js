@@ -25,23 +25,6 @@ const commentSchema = new mongoose.Schema(
 },
 );
 
-commentSchema.virtual("visible").get(function () {
-    const visibleMonths = Number(process.env.COMMENT_VISIBLE_MONTHS) || 6;
-    const fechaLimite = new Date();
-    fechaLimite.setMonth(
-        fechaLimite.getMonth() - visibleMonths
-    );
-    return this.createdAt >= fechaLimite;
-});
-
-commentSchema.set("toJSON", {
-    virtuals: true,
-});
-
-commentSchema.set("toObject", {
-    virtuals: true,
-});
-
 const Comment = mongoose.model("Comment", commentSchema);
 
 module.exports = Comment;

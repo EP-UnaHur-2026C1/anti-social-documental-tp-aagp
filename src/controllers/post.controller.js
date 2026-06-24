@@ -1,37 +1,10 @@
-const { Post, Tag, Comment, Image } = require('../models');
+const { Post, Tag } = require('../models');
 const { redisClient } = require('../config/redis');
-const { obtenerComentariosVisibles } = require("../utils/commentsFilter");
+const { agregarRelacionesPosts } = require("../utils/agregarRelacionesPosts");
 
 const obtenerPosts = async (req, res) => {
     try {
-        const posts = req.posts;
-        const postsIds = posts.map(post => post._id);
-        const comments = await obtenerComentariosVisibles({
-            postId: { $in: postsIds }
-        });
-        await Comment.populate(comments, {
-            path: "userId",
-            select: "nickname"
-        });
-        const images = await Image.find({
-            post: { $in: postsIds }
-        }).select("-createdAt -updatedAt -__v");
-        const postsConRelaciones = posts.map(post => {
-            const postId = post._id.toString();
-            return {
-                ...(typeof post.toObject === "function"
-                    ? post.toObject()
-                    : post),
-                comments: comments.filter(
-                    comment =>
-                        comment.postId.toString() === postId
-                ),
-                images: images.filter(
-                    image =>
-                        image.post.toString() === postId
-                )
-            };
-        });
+        const postsConRelaciones = await agregarRelacionesPosts(req.posts);
         res.status(200).json({
             origen: req.origen,
             posts: postsConRelaciones
@@ -46,27 +19,10 @@ const obtenerPosts = async (req, res) => {
 
 const obtenerPostPorId = async (req, res) => {
     try {
-        const post = req.post;
-        const comments = await obtenerComentariosVisibles({
-            postId: post._id
-        });
-        await Comment.populate(comments, {
-            path: "userId",
-            select: "nickname"
-        });
-        const images = await Image.find({
-            post: post._id
-        }).select("-createdAt -updatedAt -__v");
-        const respuesta = {
-            ...(typeof post.toObject === "function"
-                ? post.toObject()
-                : post),
-            comments,
-            images
-        };
+        const [postConRelaciones] = await agregarRelacionesAPosts([req.post]);
         res.status(200).json({
             origen: req.origen,
-            post: respuesta
+            post: postConRelaciones
         });
     } catch (error) {
         res.status(500).json({

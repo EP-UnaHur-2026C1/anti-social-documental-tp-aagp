@@ -15,10 +15,12 @@ const postSchema = new mongoose.Schema({
         ref: "User",
         required: [true, "User obligatorio."],
     },
-    tags: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Tag",
-    },
+    tags: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Tag"
+        }
+    ]
 }, {
     timestamps: true
 });

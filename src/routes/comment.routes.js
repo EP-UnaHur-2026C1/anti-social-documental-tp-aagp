@@ -18,7 +18,7 @@ const {
 } = require("../controllers/comment.controller");
 
 router.get("/", obtenerComentarios);
-router.get("/post/:postId", validarPostId, obtenerComentariosPorPost);
+router.get("/post/:postId", validarPostIdParam, obtenerComentariosPorPost);
 router.get("/:id", validateObjectId, validarComentarioId, obtenerComentario);
 router.post("/", validarUserComment, validarExistenciaPost, validarComentario, crearComentario);
 router.put("/:id", validateObjectId, validarComentarioId, validarComentarioAct, actualizarComentario);

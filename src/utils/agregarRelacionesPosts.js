@@ -9,7 +9,7 @@ const agregarRelacionesPosts = async (posts) => {
     });
 
     const images = await Image.find({
-        post: { $in: postsIds }
+        postId: { $in: postsIds }
     }).select("-createdAt -updatedAt -__v");
 
     return posts.map(post => {
@@ -25,7 +25,7 @@ const agregarRelacionesPosts = async (posts) => {
             ),
 
             images: images.filter(
-                i => i.post.toString() === postId
+                i => i.postId.toString() === postId
             )
         };
     });

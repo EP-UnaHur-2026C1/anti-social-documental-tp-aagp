@@ -1,6 +1,6 @@
 const { Post, Tag } = require('../models');
 const { redisClient } = require('../config/redis');
-
+const Image = require('../models/image')
 const obtenerPosts = (req,res) => {
     res.status(200).json({
         origen: req.origen,
@@ -12,8 +12,7 @@ const obtenerPostPorId = (req,res) => {
         origen: req.origen,
         post: req.post
     });
-}
-
+}    
 const publicarPost = async (req,res) => {
     try {
         const newPost = await Post.create(req.body);
@@ -129,5 +128,5 @@ module.exports = {
     eliminarPost,
     quitarTagAPost,
     agregarTagsAPost,
-    quitarTodosLosTagsAPost,
+    quitarTodosLosTagsAPost
 }

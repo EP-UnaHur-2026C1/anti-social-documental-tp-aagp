@@ -10,7 +10,7 @@ const validarUpdatePost = require('../middlewares/validarPostAct');
 const validarIdTag = require("../middlewares/existenciaUnicoTag"); // Valida ID específico para :tagsId
 const validarTagsArray = require('../middlewares/validarTagsPost'); // Valida input
 const validarTags = require("../middlewares/validarExistenciaTags"); // Valida existencia
-
+const validarid = require('../middlewares/validateObjectId')
 
 const {
     obtenerPosts,

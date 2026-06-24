@@ -27,7 +27,7 @@ const obtenerTagPorId = async (req, res) => {
 const crearTag = async (req, res) => {
     try {
         const nuevoTag = await Tag.create(req.body)
-        res.status(201).json(nuevoTag) // muestro tag
+        res.status(201).json({message: "Tag creado con exito"}) // muestro tag
     } catch (error) {
         res.status(500).json({
             message: "Error al crear el tag",

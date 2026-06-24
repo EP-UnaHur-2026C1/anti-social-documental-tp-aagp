@@ -1,18 +1,37 @@
 const { Post, Tag } = require('../models');
 const { redisClient } = require('../config/redis');
-const Image = require('../models/image')
-const obtenerPosts = (req,res) => {
-    res.status(200).json({
-        origen: req.origen,
-        posts: req.posts
-    })
+const { agregarRelacionesPosts } = require("../utils/agregarRelacionesPosts");
+
+const obtenerPosts = async (req, res) => {
+    try {
+        const postsConRelaciones = await agregarRelacionesPosts(req.posts);
+        res.status(200).json({
+            origen: req.origen,
+            posts: postsConRelaciones
+        });
+    } catch (error) {
+        res.status(500).json({
+            message: "Error al obtener posts.",
+            error: error.message
+        });
+    }
 }
-const obtenerPostPorId = (req,res) => {
-    res.status(200).json({
-        origen: req.origen,
-        post: req.post
-    });
-}    
+
+const obtenerPostPorId = async (req, res) => {
+    try {
+        const [postConRelaciones] = await agregarRelacionesAPosts([req.post]);
+        res.status(200).json({
+            origen: req.origen,
+            post: postConRelaciones
+        });
+    } catch (error) {
+        res.status(500).json({
+            message: "Error al obtener el post.",
+            error: error.message
+        });
+    }
+}
+
 const publicarPost = async (req,res) => {
     try {
         const newPost = await Post.create(req.body);
@@ -36,7 +55,8 @@ const actualizarPost = async (req,res) => {
         await redisClient.del("posts");
         const claveCache = `posts:${post._id}`;
         await redisClient.del(claveCache);
-        res.status(200).json(post);
+        const postActualizado = {...post.toObject(), ...req.body}
+        res.status(200).json(postActualizado);
     } catch (error) {
         res.status(500).json({
             message: "Error al actualizar post.",
@@ -114,9 +134,9 @@ const quitarTodosLosTagsAPost = async (req,res) => {
         await redisClient.del("posts");
         const claveCache = `posts:${post._id}`;
         await redisClient.del(claveCache);
-        res.status(200).json({message:"Se quitaron todos los Tags del Post."})
+        res.status(200).json({ message: "Se quitaron todos los Tags del Post." })
     } catch (error) {
-        res.status(500).json({error:"No fue posible quitar todos los Tags del Post."})
+        res.status(500).json({ error: "No fue posible quitar todos los Tags del Post." })
     }
 }
 

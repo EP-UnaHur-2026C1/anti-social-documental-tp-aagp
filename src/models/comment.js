@@ -9,10 +9,6 @@ const commentSchema = new mongoose.Schema(
             minlength: [1, "El comentario no puede estar vacío"],
             maxlength: [500, "El comentario no puede superar los 500 caracteres"]
         },
-        visible: {
-            type: Boolean,
-            default: true,
-        },
         userId: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",

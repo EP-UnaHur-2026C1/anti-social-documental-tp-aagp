@@ -569,31 +569,6 @@ paths:
         404:
           description: Post no encontrado
 
-  /posts/{id}/tags/{tagId}:
-    patch:
-      summary: Agregar un tag a un post
-      tags:
-        - Posts
-      parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: string
-          description: ID del post
-
-        - in: path
-          name: tagId
-          required: true
-          schema:
-            type: string
-          description: ID del tag
-      responses:
-        201:
-          description: Tag agregado al post con éxito
-        404:
-          description: Post o Tag no encontrado
-
     delete:
       summary: Eliminar un tag de un post
       tags:

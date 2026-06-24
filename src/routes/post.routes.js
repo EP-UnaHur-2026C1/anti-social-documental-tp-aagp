@@ -10,7 +10,7 @@ const validarUpdatePost = require('../middlewares/validarPostAct');
 const validarIdTag = require("../middlewares/existenciaUnicoTag"); // Valida ID específico para :tagsId
 const validarTagsArray = require('../middlewares/validarTagsPost'); // Valida input
 const validarTags = require("../middlewares/validarExistenciaTags"); // Valida existencia
-
+const validarid = require('../middlewares/validateObjectId')
 
 const {
     obtenerPosts,
@@ -32,6 +32,7 @@ router.delete("/:id", validarIdPost, eliminarPost);
 // TAG
 router.patch("/:id/tags", validarIdPost, validarTagsArray, validarTags, agregarTagsAPost);
 router.delete("/:id/tags/:tagId", validarIdPost, validarIdTag, quitarTagAPost);
-router.delete("/:id/tags", validarIdPost, validarTagsArray, validarTags, quitarTodosLosTagsAPost);
+//router.delete("/:id/tags", validarIdPost, validarTagsArray, validarTags, quitarTodosLosTagsAPost);
+router.delete("/:id/tags", validarIdPost, quitarTodosLosTagsAPost);
 
 module.exports = router;

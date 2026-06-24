@@ -7,13 +7,13 @@ const validarUserId = async (req, res, next) => {
       '-password -createdAt -updatedAt -__v'
     );
     if (!user) {
-      return res.status(404).json({ message: 'User no encontrado' })
+      return res.status(404).json({ message: 'Usuario no encontrado' })
     }
     req.user = user
     next();
   } catch (error) {
     res.status(500).json({
-      message: 'Error al obtener user',
+      message: 'Error al obtener usuario',
       error: error.message
     })
   }

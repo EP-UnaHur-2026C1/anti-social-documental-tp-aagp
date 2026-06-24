@@ -38,7 +38,7 @@ const obtenerUser = async (req, res) => {
 const crearUser = async (req, res) => {
   try {
     const newUser = await User.create(req.body);
-    res.status(201).json(newUser);
+    res.status(201).json({message: "Usuario creado correctamente"});
   } catch (error) {
     res.status(500).json({
       message: "Error al crear el usuario",
@@ -53,7 +53,7 @@ const actualizarUser = async (req, res) => {
       new: true,
       runValidators: true
     });
-    res.status(200).json(user);
+    res.status(200).json({message: "Usuario actualizado"});
   } catch (error) {
     res.status(500).json({
       error: "Error al actualizar usuario",

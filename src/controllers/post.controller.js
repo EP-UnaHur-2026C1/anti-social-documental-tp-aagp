@@ -19,7 +19,7 @@ const obtenerPosts = async (req, res) => {
 
 const obtenerPostPorId = async (req, res) => {
     try {
-        const [postConRelaciones] = await agregarRelacionesAPosts([req.post]);
+        const [postConRelaciones] = await agregarRelacionesPosts([req.post]);
         res.status(200).json({
             origen: req.origen,
             post: postConRelaciones

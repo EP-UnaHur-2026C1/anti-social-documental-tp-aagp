@@ -28,7 +28,7 @@ const obtenerComentariosVisibles = async (
     );
 
     return comentarios.filter(
-        c => c.userId && (!populatePost || comentario.postId)
+        c => c.userId && (!populatePost || c.postId)
     );
 };
 

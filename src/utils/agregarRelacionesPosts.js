@@ -1,5 +1,5 @@
 const Image = require("../models/image");
-const { obtenerComentariosVisibles } = require("./commentsFilter");
+const { obtenerComentariosVisibles } = require("./obtenerComentariosVisibles");
 
 const agregarRelacionesPosts = async (posts) => {
     const postsIds = posts.map(post => post._id);
@@ -20,13 +20,33 @@ const agregarRelacionesPosts = async (posts) => {
                 ? post.toObject()
                 : post),
 
-            comments: comments.filter(
-                c => c.postId.toString() === postId
-            ),
+            comments: comments
+                .filter(
+                    c => c.postId.toString() === postId
+                )
+                .map(c => {
+                    const comentario = typeof c.toObject === "function"
+                        ? c.toObject()
+                        : { ...c };
 
-            images: images.filter(
-                i => i.postId.toString() === postId
-            )
+                    delete comentario.postId;
+
+                    return comentario;
+                }),
+
+            images: images
+                .filter(
+                    i => i.postId.toString() === postId
+                )
+                .map(i => {
+                    const imagen = typeof i.toObject === "function"
+                        ? i.toObject()
+                        : { ...i };
+
+                    delete imagen.postId;
+
+                    return imagen;
+                })
         };
     });
 };

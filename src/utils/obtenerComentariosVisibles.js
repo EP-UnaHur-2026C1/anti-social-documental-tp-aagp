@@ -2,7 +2,7 @@ const Comment = require("../models/comment");
 
 const obtenerComentariosVisibles = async (
     filtro = {},
-    populatePost = false 
+    populatePost = false
 ) => {
     const visibleMonths = Number(process.env.COMMENT_VISIBLE_MONTHS) || 6;
 

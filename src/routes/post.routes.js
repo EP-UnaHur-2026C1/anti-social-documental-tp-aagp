@@ -23,7 +23,7 @@ const {
 } = require("../controllers/post.controller");
 
 router.get("/", validarPostCache, obtenerPosts);
-router.get("/:id", validarIdPost, obtenerPostPorId);
+router.get("/:id", validarid, validarIdPost, obtenerPostPorId);
 router.post("/", validarIdUser, validarPost, validarTags, publicarPost);
 router.patch("/:id", validarIdPost, validarUpdatePost, actualizarContenidoPost);
 router.delete("/:id", validarIdPost, eliminarPost);

@@ -34,8 +34,20 @@ const obtenerComentario = async (req, res) => {
 
 const crearComentario = async (req, res) => {
     try {
+        /*const comentario = await Comment.create(req.body);
+        res.status(201).json({message: "Comentario creado correctamente"});*/
+
         const comentario = await Comment.create(req.body);
-        res.status(201).json(comentario);
+
+        const nuevoComentario = await Comment.findById(
+            comentario._id
+        )
+            .populate("userId", "nickname")
+            .populate("postId", "texto fecha")
+            .select("-createdAt -updatedAt -__v");
+
+        res.status(201).json(nuevoComentario);
+
     } catch (error) {
         res.status(500).json({
             message: "Error al crear el comentario",
@@ -49,7 +61,7 @@ const actualizarComentario = async (req, res) => {
         const comentario = req.comment;
         comentario.content = req.body.content;
         await comentario.save();
-        res.status(200).json(comentario)
+        res.status(200).json({message: "Comentario actualizado con exito"})
     } catch (error) {
         res.status(500).json({
             message: "Error al actualizar el comentario",

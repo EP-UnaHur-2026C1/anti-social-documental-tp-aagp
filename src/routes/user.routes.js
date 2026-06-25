@@ -13,12 +13,6 @@ const validateObjectId = require("../middlewares/validateObjectId")
 const validarUserId = require('../middlewares/validarUserId')
 const router = Router();
 
-// Importamos el controlador de follow que sí tenemos listo
-// const followController = require('../controllers/follow.controller'); 
-
-// Registramos el endpoint de follow colgando de la raíz de usuarios
-// router.post('/:followingId/follow', followController.toggleFollow);
-
 router.get("/", obtenerUsers);
 router.get("/:id", validateObjectId, validarUserId, obtenerUser);
 router.post("/", validarUser, crearUser);

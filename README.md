@@ -53,241 +53,128 @@ npm run dev
 ```
 
 
-###### **Colección de pruebas Postman**
+## **Colección de pruebas Postman**
 
+### Importar la colección
 
+1. Abrir Postman.
 
-Importar la colección
+2. Seleccionar Import.
 
+3. Importar el archivo de la colección ubicado en:
 
+    &#x09;docs/TP2-AAGP.postman\_collection.json
 
-1\. Abrir Postman.
+### Ejecución de las pruebas
 
-2\. Seleccionar Import.
+1. Ejecutar la carpeta **Setup**
+    
+    Las requests de esta carpeta deben ejecutarse manualmente y en orden, ya que cada una genera las variables necesarias para la siguiente.
+    
+    Orden:
+    
+    1. Crear usuario
+    2. Crear tag 1
+    3. Crear tag 2
+    4. Crear post
+    5. Crear imagen
+    6. Crear comentario
 
-3\. Importar el archivo de la colección ubicado en:
+    Las variables se almacenan automáticamente durante la ejecución.
 
+2. Ejecutar las carpetas **funcionales**
+    
+    Una vez completado el Setup, pueden ejecutarse las siguientes carpetas:
+    - Users
+    - Tags
+    - Posts
+    - Images
+    - Comments
+    - Relaciones
 
+    Estas carpetas utilizan las variables generadas durante el Setup.
 
-&#x09;docs/TP2-AAGP.postman\_collection.json
+3. Ejecutar la carpeta de **errores**
 
+    Esta carpeta contiene pruebas de:
+    - IDs inválidos.
+    - Recursos inexistentes.
+    - Validaciones de campos obligatorios.
+    - Datos con formato incorrecto.
 
+    Estas pruebas no modifican la información almacenada.
 
-Ejecución de las pruebas
+4. Ejecutar las **eliminaciones**
 
+    La carpeta de eliminaciones debe ejecutarse al finalizar todas las pruebas, ya que elimina los recursos creados durante el Setup.
 
+    Orden recomendado:
 
-1\. Ejecutar la carpeta Setup
+    1. Eliminar comentario.
+    2. Eliminar imagen.
+    3. Eliminar post.
+    4. Eliminar tag 1.
+    5. Eliminar tag 2.
+    6. Eliminar usuario.
 
+    Una vez ejecutada esta carpeta, será necesario volver a realizar el Setup para generar nuevamente los datos de prueba.
 
 
-Las requests de esta carpeta deben ejecutarse manualmente y en orden, ya que cada una genera las variables necesarias para la siguiente.
 
-
-
-Orden:
-
-
-
-1\. Crear usuario
-
-2\. Crear tag 1
-
-3\. Crear tag 2
-
-4\. Crear post
-
-5\. Crear imagen
-
-6\. Crear comentario
-
-
-
-Las variables se almacenan automáticamente durante la ejecución.
-
-
-
-2\. Ejecutar las carpetas funcionales
-
-
-
-Una vez completado el Setup, pueden ejecutarse las siguientes carpetas:
-
-
-
-\- Users
-
-\- Tags
-
-\- Posts
-
-\- Images
-
-\- Comments
-
-\- Relaciones
-
-
-
-Estas carpetas utilizan las variables generadas durante el Setup.
-
-
-
-3\. Ejecutar la carpeta de errores
-
-
-
-Esta carpeta contiene pruebas de:
-
-
-
-\- IDs inválidos.
-
-\- Recursos inexistentes.
-
-\- Validaciones de campos obligatorios.
-
-\- Datos con formato incorrecto.
-
-
-
-Estas pruebas no modifican la información almacenada.
-
-
-
-4\. Ejecutar las eliminaciones
-
-
-
-La carpeta de eliminaciones debe ejecutarse al finalizar todas las pruebas, ya que elimina los recursos creados durante el Setup.
-
-
-
-Orden recomendado:
-
-
-
-1\. Eliminar comentario.
-
-2\. Eliminar imagen.
-
-3\. Eliminar post.
-
-4\. Eliminar tag 1.
-
-5\. Eliminar tag 2.
-
-6\. Eliminar usuario.
-
-
-
-Una vez ejecutada esta carpeta, será necesario volver a realizar el Setup para generar nuevamente los datos de prueba.
-
-
-
-###### **Regla de negocio: visibilidad de comentarios por antigüedad**
-
-
+## **Regla de negocio: visibilidad de comentarios por antigüedad**
 
 El sistema implementa una regla de negocio que limita la visualización de comentarios antiguos en la visualización de posteos.
-
-
-
 Los comentarios con una antigüedad mayor a un valor configurable mediante variables de entorno no se muestran en los endpoints donde se listan publicaciones.
 
+La configuración se define en .env mediante:    
 
+COMMENT\_VISIBLE\_MONTHS=6
 
-La configuración se define mediante: COMMENT\_VISIBLE\_MONTHS=6
-
-
-
-Aplicación de la regla
-
-
+### Aplicación de la regla
 
 Esta regla se aplica en:
 
+    GET /posts
 
+    GET /posts/:id
 
-GET /posts
-
-GET /posts/:id
-
-GET /users/:id/posts
-
-
+    GET /users/:id/posts
 
 y en cualquier endpoint donde los comentarios estén asociados a la visualización de un post.
 
-
-
-Casos donde NO se aplica el filtro:
-
-
+Casos donde **NO** se aplica el filtro:
 
 No se aplica la restricción temporal en endpoints de consulta directa de comentarios, como:
 
+    GET /comments
 
-
-GET /comments
-
-GET /users/:id/comments
-
-
+    GET /users/:id/comments
 
 ya que en estos casos los comentarios se consideran parte del historial del usuario y no de la visualización de publicaciones.
 
-
-
-Implementación
-
-
+### Implementación
 
 La lógica de filtrado se centraliza en:
 
-
-
 &#x09;utils/obtenerComentariosVisibles.js
-
-
 
 para asegurar consistencia en todos los endpoints que requieren la regla de negocio.
 
-
-
-Cómo probar esta funcionalidad
-
-
+### Cómo probar esta funcionalidad
 
 Como la regla depende del tiempo de creación de los comentarios, se recomienda ajustar temporalmente la variable de entorno para facilitar las pruebas.
 
-
-
-✔ Opción 1 (recomendada para pruebas rápidas)
-
-
+**Opción 1:** 
 
 Reducir el valor de la variable en el archivo .env:
 
-
-
 COMMENT\_VISIBLE\_MONTHS=0
-
-
 
 De esta forma, solo se mostrarán los comentarios creados en el momento de la ejecución.
 
-
-
-✔ Opción 2 (prueba manual avanzada)
-
-
+**Opción 2:** 
 
 Crear comentarios con diferentes fechas de creación (por ejemplo, mediante ajustes en la base de datos o datos de prueba) para simular comentarios antiguos y verificar el filtrado por antigüedad.
-
-
-
-
 
 ## Estructura
 

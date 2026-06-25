@@ -95,7 +95,7 @@ const obtenerPostPorUsuario = async (req, res) => {
 const obtenerUserComments = async (req, res) => {
   try {
     const userComments = await Comment.find({ userId: req.user._id }).populate({ path: 'postId', select: '-texto -user -tags -__v' }).select('-visible -__v')
-    res.status(500).json(userComments)
+    res.status(200).json(userComments)
   } catch (error) {
     res.status(500).json({
       error: "Error al obtener comments del usuario"

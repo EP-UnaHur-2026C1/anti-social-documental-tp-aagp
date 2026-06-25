@@ -45,7 +45,7 @@ const publicarPost = async (req,res) => {
     }
 }
 
-const actualizarPost = async (req,res) => {
+const actualizarContenidoPost = async (req,res) => {
     try {
         const post = req.post;
         await Post.updateOne(
@@ -55,8 +55,13 @@ const actualizarPost = async (req,res) => {
         await redisClient.del("posts");
         const claveCache = `posts:${post._id}`;
         await redisClient.del(claveCache);
-        const postActualizado = {...post.toObject(), ...req.body}
-        res.status(200).json(postActualizado);
+        const postActualizado = {
+            ...(typeof post.toObject === "function"
+                ? post.toObject()
+                : post),
+            ...req.body
+        };
+        res.status(200).json({message: "Post actualizado con exito"});
     } catch (error) {
         res.status(500).json({
             message: "Error al actualizar post.",
@@ -83,7 +88,6 @@ const eliminarPost = async (req,res) => {
     }
 }
 
-// Tags con redis agregado
 const quitarTagAPost = async (req,res) => {
     try {
         const post = req.post
@@ -144,7 +148,7 @@ module.exports = {
     obtenerPosts,
     obtenerPostPorId,
     publicarPost,
-    actualizarPost,
+    actualizarContenidoPost,
     eliminarPost,
     quitarTagAPost,
     agregarTagsAPost,

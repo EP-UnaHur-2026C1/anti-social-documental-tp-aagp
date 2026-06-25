@@ -26,8 +26,18 @@ const obtenerTagPorId = async (req, res) => {
 
 const crearTag = async (req, res) => {
     try {
-        const nuevoTag = await Tag.create(req.body)
-        res.status(201).json({message: "Tag creado con exito"}) // muestro tag
+        /*const nuevoTag = await Tag.create(req.body)
+        res.status(201).json({message: "Tag creado con exito"}) // muestro tag*/
+
+        const tag = await Tag.create(req.body);
+
+        const nuevoTag = await Tag.findById(
+            tag._id
+        )
+        .select("-createdAt -updatedAt -__v");
+
+        res.status(201).json(nuevoTag);
+
     } catch (error) {
         res.status(500).json({
             message: "Error al crear el tag",
@@ -43,7 +53,7 @@ const actualizarTag = async (req, res) => {
             new: true,
             runValidators: true,
         })
-        res.status(200).json(tag)
+        res.status(200).json({message: "Tag actualizado con exito"})
     } catch (error) {
         res.status(500).json({
             message: "Error al actualizar el tag"

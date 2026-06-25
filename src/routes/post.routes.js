@@ -26,7 +26,7 @@ router.get("/", validarPostCache, obtenerPosts);
 router.get("/:id", validarid, validarIdPost, obtenerPostPorId);
 router.post("/", validarIdUser, validarPost, validarTags, publicarPost);
 router.patch("/:id", validarid, validarIdPost, validarUpdatePost, actualizarContenidoPost);
-router.delete("/:id", valiidarid, validarIdPost, eliminarPost);
+router.delete("/:id", validarid, validarIdPost, eliminarPost);
 
 router.patch("/:id/tags", validarid, validarIdPost, validarTagsArray, validarTags, agregarTagsAPost);
 router.delete("/:id/tags/:tagId", validarid, validarIdPost, validarIdTag, quitarTagAPost);

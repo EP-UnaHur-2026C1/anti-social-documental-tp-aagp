@@ -6,9 +6,9 @@ const validarIdUser = require('../middlewares/validarUserId');
 const validarPostCache = require('../middlewares/validarPostCache');
 const validarUpdatePost = require('../middlewares/validarPostAct');
 
-const validarIdTag = require("../middlewares/existenciaUnicoTag"); 
-const validarTagsArray = require('../middlewares/validarTagsPost'); 
-const validarTags = require("../middlewares/validarExistenciaTags"); 
+const validarIdTag = require("../middlewares/existenciaUnicoTag");
+const validarTagsArray = require('../middlewares/validarTagsPost');
+const validarTags = require("../middlewares/validarExistenciaTags");
 const validarid = require('../middlewares/validateObjectId')
 
 const {

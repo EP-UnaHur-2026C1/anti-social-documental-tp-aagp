@@ -1,4 +1,5 @@
 const User = require("../models/user");
+
 const validarUserCommentExistencia = async (req, res, next) => {
     try {
         const { userId } = req.body;
@@ -17,4 +18,5 @@ const validarUserCommentExistencia = async (req, res, next) => {
         });
     }
 };
+
 module.exports = validarUserCommentExistencia;

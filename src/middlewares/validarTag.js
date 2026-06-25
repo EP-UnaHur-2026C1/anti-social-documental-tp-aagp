@@ -1,4 +1,3 @@
-// valido que el tag sea correcto:
 const tagSchema = require('../schemas/tag.schema')
 
 const validarTag = (req,res,next) =>{
@@ -8,4 +7,5 @@ const validarTag = (req,res,next) =>{
     }
     next()
 }
+
 module.exports = validarTag

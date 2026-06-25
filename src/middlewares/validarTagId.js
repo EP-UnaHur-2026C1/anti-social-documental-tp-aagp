@@ -19,4 +19,5 @@ const validarTagId = async(req,res,next) => {
         })
     }
 }
-module.exports = validarTagId
+
+module.exports = validarTagId;

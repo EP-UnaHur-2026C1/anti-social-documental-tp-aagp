@@ -32,11 +32,15 @@ const obtenerPostPorId = async (req, res) => {
     }
 }
 
-const publicarPost = async (req,res) => {
+const publicarPost = async (req, res) => {
     try {
-        const newPost = await Post.create(req.body);
+        const post = await Post.create(req.body);
         await redisClient.del("posts");
-        res.status(201).json({ message: "Se ha publicado el Post." });
+        const nuevoPost = await Post.findById(post._id)
+            .populate("user", "nickname")
+            .populate("tags", "nombre")
+            .select("-createdAt -updatedAt -__v");
+        res.status(201).json(nuevoPost);
     } catch (error) {
         res.status(500).json({
             message: "Error al publicar.",
@@ -45,7 +49,7 @@ const publicarPost = async (req,res) => {
     }
 }
 
-const actualizarContenidoPost = async (req,res) => {
+const actualizarContenidoPost = async (req, res) => {
     try {
         const post = req.post;
         await Post.updateOne(
@@ -61,7 +65,7 @@ const actualizarContenidoPost = async (req,res) => {
                 : post),
             ...req.body
         };
-        res.status(200).json({message: "Post actualizado con exito"});
+        res.status(200).json({ message: "Post actualizado con exito" });
     } catch (error) {
         res.status(500).json({
             message: "Error al actualizar post.",
@@ -70,7 +74,7 @@ const actualizarContenidoPost = async (req,res) => {
     }
 }
 
-const eliminarPost = async (req,res) => {
+const eliminarPost = async (req, res) => {
     try {
         const post = req.post;
         await Post.deleteOne(
@@ -88,7 +92,7 @@ const eliminarPost = async (req,res) => {
     }
 }
 
-const quitarTagAPost = async (req,res) => {
+const quitarTagAPost = async (req, res) => {
     try {
         const post = req.post
         const tag = req.tag
@@ -108,7 +112,7 @@ const quitarTagAPost = async (req,res) => {
     }
 }
 
-const agregarTagsAPost = async (req,res) => {
+const agregarTagsAPost = async (req, res) => {
     try {
         const post = req.post
         const { tags } = req.body;
@@ -128,7 +132,7 @@ const agregarTagsAPost = async (req,res) => {
     }
 }
 
-const quitarTodosLosTagsAPost = async (req,res) => {
+const quitarTodosLosTagsAPost = async (req, res) => {
     try {
         const post = req.post
         await Post.updateOne(

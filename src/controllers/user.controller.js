@@ -37,9 +37,6 @@ const obtenerUser = async (req, res) => {
 
 const crearUser = async (req, res) => {
   try {
-    /*const newUser = await User.create(req.body);
-    res.status(201).json({message: "Usuario creado correctamente"});*/
-
     const user = await User.create(req.body);
 
     const nuevoUser = await User.findById(

@@ -24,4 +24,5 @@ const schemaPostParaActualizar = Joi.object({
             })
         )
 });
+
 module.exports = schemaPostParaActualizar;

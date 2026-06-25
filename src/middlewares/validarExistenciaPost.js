@@ -2,7 +2,6 @@ const Post = require("../models/post");
 
 const validarExistenciaPost = async (req, res, next) => {
     try {
-        // const id = req.body.postId;
         const { postId } = req.body;
         const post = await Post.findById(postId);
         if (!post) {

@@ -19,4 +19,5 @@ const imageSchemaa = Joi.object({
             "any.required": "El postId es obligatoria"
         }) 
 })
+
 module.exports = imageSchemaa

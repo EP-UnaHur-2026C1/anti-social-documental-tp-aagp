@@ -12,4 +12,5 @@ const imageSchemaAct = Joi.object({
             "any.required": "La url es obligatoria"
         })
 })
+
 module.exports = imageSchemaAct

@@ -14,10 +14,10 @@ const {
     actualizarImagen
 } = require('../controllers/image.controller')
 
-router.get('/',obtenerImagenes);
-router.get('/:id',validateObjectId,validarImagenId,obtenerImagenPorId); 
-router.post('/',validarImage,validarPostExista,crearImagen); 
-router.put('/:id',validateObjectId,validarImgAct,validarImagenId,actualizarImagen); 
-router.delete('/:id',validateObjectId,validarImagenId,eliminarImagen); 
+router.get('/', obtenerImagenes);
+router.get('/:id', validateObjectId, validarImagenId, obtenerImagenPorId);
+router.post('/', validarImage, validarPostExista, crearImagen);
+router.put('/:id', validateObjectId, validarImgAct, validarImagenId, actualizarImagen);
+router.delete('/:id', validateObjectId, validarImagenId, eliminarImagen);
 
 module.exports = router;

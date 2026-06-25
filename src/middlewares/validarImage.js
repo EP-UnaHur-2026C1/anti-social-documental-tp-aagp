@@ -1,4 +1,5 @@
 const imgSchema = require('../schemas/image.schema')
+
 const validarImage = (req,res,next) =>{
     const { error } = imgSchema.validate(req.body)
     if (error) {
@@ -6,4 +7,5 @@ const validarImage = (req,res,next) =>{
     }
     next()
 }
+
 module.exports = validarImage

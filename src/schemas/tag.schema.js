@@ -12,4 +12,5 @@ const tagSchema = Joi.object({
             "any.required": "El nombre es obligatorio"
         })
 })
+
 module.exports = tagSchema

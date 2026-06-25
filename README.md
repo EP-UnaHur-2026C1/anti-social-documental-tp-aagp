@@ -5,70 +5,430 @@ Se solicita el modelado y desarrollo de un sistema backend para una red social l
 
 ![Imagen](./assets/ANTI-SOCIALNET.jpeg)
 
-# Contexto del Proyecto
+## Tecnologías
 
-En una primera reunión con los sponsors del proyecto, se definieron los siguientes requerimientos para el desarrollo de un **MVP (Producto Mínimo Viable)**:
+- **Node.js**
+- **Express**
+- **MongoDB**
+- **Mongoose**
+- **Redis**
+- **Joi**
+- **Swagger**
+- **Docker**
+- **Mongo Express**
+---
 
-- El sistema debe permitir que un usuario registrado realice una publicación (post), incluyendo **obligatoriamente una descripción**. De forma opcional, se podrán asociar **una o más imágenes** a dicha publicación.
+## Instrucciones 
 
-- Las publicaciones pueden recibir **comentarios** por parte de otros usuarios.
+### Instalación y Ejecución
 
-- Las publicaciones pueden estar asociadas a **etiquetas (tags)**. Una misma etiqueta puede estar vinculada a múltiples publicaciones.
+1. Clonar el repositorio:
 
-- Es importante que los **comentarios más antiguos que X meses** (valor configurable mediante variables de entorno, por ejemplo, 6 meses) **no se muestren** en la visualización de los posteos.
+```bash
+git clone https://github.com/EP-UnaHur-2026C1/anti-social-documental-tp-aagp.git
+```
 
-####
+2. Ingresar al directorio del proyecto:
 
-# Entidades y Reglas de Negocio
+```bash
+cd anti-social-documental-tp-aagp
+```
 
-Los sponsors definieron los siguientes nombres y descripciones para las entidades:
+3. Instalar las dependencias:
 
-- **User**: Representa a los usuarios registrados en el sistema. El campo `nickName` debe ser **único** y funcionará como identificador principal del usuario.
+```bash
+npm i
+```
 
-- **Post**: Publicación realizada por un usuario en una fecha determinada que contiene el texto que desea publicar. Puede tener **cero o más imágenes** asociadas. Debe contemplarse la posibilidad de **agregar o eliminar imágenes** posteriormente.
+4. Inicializar contenedores de docker:
 
-- **Post_Images**: Entidad que registra las imágenes asociadas a los posts. Para el MVP, solo se requiere almacenar la **URL de la imagen alojada**.
+```bash
+docker compose up -d
+```
 
-- **Comment**: Comentario que un usuario puede realizar sobre una publicación. Incluye la fecha en la que fue realizado y una indicación de si está **visible o no**, dependiendo de la configuración (X meses).
+5. Ejecutar el proyecto en modo desarrollo:
 
-- **Tag**: Etiqueta que puede ser asignada a un post. Una etiqueta puede estar asociada a **muchos posts**, y un post puede tener **múltiples etiquetas**.
+```bash
+npm run dev
+```
 
-# Requerimientos Técnicos
 
-1. **Modelado de Datos**
+###### **Colección de pruebas Postman**
 
-   - Diseñar el modelo documental que represtente todas las entidades definidas por los sponsor del proyecto. Queda a su criterio si usan relaciones embebidas o relaciones referenciadas a otros documentos.
 
-### Ejemplo referenciadas
 
-![referenciadas](./assets/Referenciada.png)
+Importar la colección
 
-2. **Desarrollo del Backend**
 
-   - Crear los **endpoints CRUD** necesarios para cada entidad.
 
-   - Implementar las rutas necesarias para gestionar las relaciones entre entidades (por ejemplo: asociar imágenes a un post, etiquetas a una publicación, etc.).
+1\. Abrir Postman.
 
-   - Desarrollar las validaciones necesarias para asegurar la integridad de los datos (schemas, validaciones de integridad referencial).
+2\. Seleccionar Import.
 
-   - Desarrollar las funciones controladoras con una única responsabiliad evitando realizar comprobaciones innecesarias en esta parte del código.
+3\. Importar el archivo de la colección ubicado en:
 
-3. **Configuración y Portabilidad**
 
-   - La configuración de las variables del motor deben ser por configuración e instalación de dependencias adecuadas.
 
-   - El sistema debe permitir configurar el **puerto de ejecución y variables de entorno** fácilmente.
+&#x09;docs/TP2-AAGP.postman\_collection.json
 
-4. **Documentación**
 
-   - Generar la documentación de la API utilizando **Swagger (formato YAML)**, incluyendo todos los endpoints definidos.
 
-5. **Colecciones de Prueba**
+Ejecución de las pruebas
 
-   - Entregar las colecciones necesarias para realizar pruebas (por ejemplo, colecciones de Postman o archivos JSON de ejemplo).
 
-# Bonus
 
-- Hace el upload de las imganes que se asocian a un POST que lo guarden en una carpeta de imagenes dentro del servidor web.
-- ¿Cómo modelarías que un usuario pueda "seguir" a otros usuarios, y a su vez ser seguido por muchos? Followers
-- Con la información de los post no varia muy seguido que estrategias podrian utilizar la que la información no sea constantemente consultada desde la base de datos.
+1\. Ejecutar la carpeta Setup
+
+
+
+Las requests de esta carpeta deben ejecutarse manualmente y en orden, ya que cada una genera las variables necesarias para la siguiente.
+
+
+
+Orden:
+
+
+
+1\. Crear usuario
+
+2\. Crear tag 1
+
+3\. Crear tag 2
+
+4\. Crear post
+
+5\. Crear imagen
+
+6\. Crear comentario
+
+
+
+Las variables se almacenan automáticamente durante la ejecución.
+
+
+
+2\. Ejecutar las carpetas funcionales
+
+
+
+Una vez completado el Setup, pueden ejecutarse las siguientes carpetas:
+
+
+
+\- Users
+
+\- Tags
+
+\- Posts
+
+\- Images
+
+\- Comments
+
+\- Relaciones
+
+
+
+Estas carpetas utilizan las variables generadas durante el Setup.
+
+
+
+3\. Ejecutar la carpeta de errores
+
+
+
+Esta carpeta contiene pruebas de:
+
+
+
+\- IDs inválidos.
+
+\- Recursos inexistentes.
+
+\- Validaciones de campos obligatorios.
+
+\- Datos con formato incorrecto.
+
+
+
+Estas pruebas no modifican la información almacenada.
+
+
+
+4\. Ejecutar las eliminaciones
+
+
+
+La carpeta de eliminaciones debe ejecutarse al finalizar todas las pruebas, ya que elimina los recursos creados durante el Setup.
+
+
+
+Orden recomendado:
+
+
+
+1\. Eliminar comentario.
+
+2\. Eliminar imagen.
+
+3\. Eliminar post.
+
+4\. Eliminar tag 1.
+
+5\. Eliminar tag 2.
+
+6\. Eliminar usuario.
+
+
+
+Una vez ejecutada esta carpeta, será necesario volver a realizar el Setup para generar nuevamente los datos de prueba.
+
+
+
+###### **Regla de negocio: visibilidad de comentarios por antigüedad**
+
+
+
+El sistema implementa una regla de negocio que limita la visualización de comentarios antiguos en la visualización de posteos.
+
+
+
+Los comentarios con una antigüedad mayor a un valor configurable mediante variables de entorno no se muestran en los endpoints donde se listan publicaciones.
+
+
+
+La configuración se define mediante: COMMENT\_VISIBLE\_MONTHS=6
+
+
+
+Aplicación de la regla
+
+
+
+Esta regla se aplica en:
+
+
+
+GET /posts
+
+GET /posts/:id
+
+GET /users/:id/posts
+
+
+
+y en cualquier endpoint donde los comentarios estén asociados a la visualización de un post.
+
+
+
+Casos donde NO se aplica el filtro:
+
+
+
+No se aplica la restricción temporal en endpoints de consulta directa de comentarios, como:
+
+
+
+GET /comments
+
+GET /users/:id/comments
+
+
+
+ya que en estos casos los comentarios se consideran parte del historial del usuario y no de la visualización de publicaciones.
+
+
+
+Implementación
+
+
+
+La lógica de filtrado se centraliza en:
+
+
+
+&#x09;utils/obtenerComentariosVisibles.js
+
+
+
+para asegurar consistencia en todos los endpoints que requieren la regla de negocio.
+
+
+
+Cómo probar esta funcionalidad
+
+
+
+Como la regla depende del tiempo de creación de los comentarios, se recomienda ajustar temporalmente la variable de entorno para facilitar las pruebas.
+
+
+
+✔ Opción 1 (recomendada para pruebas rápidas)
+
+
+
+Reducir el valor de la variable en el archivo .env:
+
+
+
+COMMENT\_VISIBLE\_MONTHS=0
+
+
+
+De esta forma, solo se mostrarán los comentarios creados en el momento de la ejecución.
+
+
+
+✔ Opción 2 (prueba manual avanzada)
+
+
+
+Crear comentarios con diferentes fechas de creación (por ejemplo, mediante ajustes en la base de datos o datos de prueba) para simular comentarios antiguos y verificar el filtrado por antigüedad.
+
+
+
+
+
+## Estructura
+
+```text
+.
+├── assets
+│   ├── ANTI-SOCIALNET.jpeg
+│   └── Referenciada.png
+├── src
+│   ├── config
+│   │   ├── db.js
+│   │   ├── redis.js
+│   │   └── swagger.js
+│   ├── controllers
+│   │   ├── comment.controller.js
+│   │   ├── image.controller.js
+│   │   ├── post.controller.js
+│   │   ├── tag.controller.js
+│   │   └── user.controller.js
+│   ├── docs
+│   │   └── swagger.yaml
+│   ├── middlewares
+│   │   ├── existenciaUnicoTag.js
+│   │   ├── validarComentarioId.js
+│   │   ├── validarComentario.js
+│   │   ├── validarCommentAct.js
+│   │   ├── validarExistenciaPost.js
+│   │   ├── validarExistenciaTags.js
+│   │   ├── validarImageId.js
+│   │   ├── validarImage.js
+│   │   ├── validarImgAct.js
+│   │   ├── validarPostAct.js
+│   │   ├── validarPostCache.js
+│   │   ├── validarPostId.js
+│   │   ├── validarPostIdParam.js
+│   │   ├── validarPost.js
+│   │   ├── validarTagId.js
+│   │   ├── validarTag.js
+│   │   ├── validarTagsPost.js
+│   │   ├── validarUserComment.js
+│   │   ├── validarUserId.js
+│   │   ├── validarUser.js
+│   │   └── validateObjectId.js
+│   ├── models
+│   │   ├── comment.js
+│   │   ├── image.js
+│   │   ├── index.js
+│   │   ├── post.js
+│   │   ├── tag.js
+│   │   └── user.js
+│   ├── routes
+│   │   ├── comment.routes.js
+│   │   ├── image.routes.js
+│   │   ├── post.routes.js
+│   │   ├── tag.routes.js
+│   │   └── user.routes.js
+│   ├── schemas
+│   │   ├── commentSchemaAct.js
+│   │   ├── comment.schema.js
+│   │   ├── imageAct.schema.js
+│   │   ├── image.schema.js
+│   │   ├── postAct.schema.js
+│   │   ├── post.schema.js
+│   │   ├── postTag.schema.js
+│   │   ├── tag.schema.js
+│   │   └── user.schema.js
+│   ├── utils
+│   │   ├── agregarRelacionesPosts.js
+│   │   └── obtenerComentariosVisibles.js
+│   └── main.js
+├── app.js
+├── docker-compose.yml
+├── package.json
+├── package-lock.json
+└── README.md
+
+```
+
+## Endpoints
+
+### User
+
+| Método| Ruta | Descripción | Middleware |
+| ----- | ---- | ----------- | ---------- |
+| `` GET ``| ``/users`` | Obtener todos los usuarios |  |
+| `` GET ``| ``/users/:id`` | Obtener un usuario por su id | ``validateObjectId`` ``validarUserId`` |
+| `` GET ``| ``/users/:id/posts`` | Obtener todos los post de un usuario | ``validateObjectId`` ``validarUserId`` |
+| `` GET ``| ``/users/:id/comments`` | Obtener todos los comentarios de un usuario | ``validateObjectId`` ``validarUserId`` |
+| ``POST``| ``/users`` | Crear un usuario | ``validarUser`` |
+| `` PUT ``| ``/users/:id`` | Actualizar usuario | ``validateObjectId`` ``validarUserId`` ``validarUser`` |
+| `` DELETE ``| ``/users/:id`` | Eliminar usuario | ``validateObjectId`` ``validarUserId`` |
+
+### Post
+
+| Método| Ruta | Descripción | Middleware |
+| ----- | ---- | ----------- | ---------- |
+| `` GET ``| ``/posts`` | Obtener todos los posts | ``validarPostCache`` |
+| `` GET ``| ``/posts/:id`` | Obtener un post por su id | ``validateObjectId`` ``validarPostId`` |
+| ``POST``| ``/posts/`` | Crear post | ``validarUserId`` ``validarPost`` ``validarExistenciaTags`` |
+| `` PATCH ``| ``/posts/:id`` | Actualizar contenido de un post | ``validateObjectId`` ``validarPostId`` ``validarPostAct`` |
+| ``PATCH``| ``/posts/:id/tags`` | Agregar tag a un post | ``validateObjectId`` ``validarPostId`` |
+| `` DELETE ``| ``/posts/:id`` | Eliminar post | ``validateObjectId`` ``validarPostId`` |
+| `` DELETE ``| ``/posts/:id/tags/:tagId`` | Eliminar tag de un post | ``validateObjectId``  ``validarPostId`` ``existenciaUnicoTag`` |
+| `` DELETE ``| ``/posts/:id/tags`` | Eliminar todos los tags de un post | ``validateObjectId`` ``validarPostId``  |
+
+### Tag
+
+| Método| Ruta | Descripción | Middleware |
+| ----- | ---- | ----------- | ---------- |
+| `` GET ``| ``/tags`` | Obtener todos los tags | |
+| `` GET ``| ``/tags/:id`` | Obtener un tag por su id | ``validateObjectId`` ``validarTagId`` |
+| ``POST``| ``/tags`` | Crear un tag | ``validarTag`` |
+| `` PUT ``| ``/tags/:id`` | Actualizar tag | ``validateObjectId`` ``validarTag`` ``validarTagId`` |
+| `` DELETE ``| ``/tags/:id`` | Eliminar tag | ``validateObjectId`` ``validarTagId`` |
+
+### Comment
+
+| Método| Ruta | Descripción | Middleware |
+| ----- | ---- | ----------- | ---------- |
+| `` GET ``| ``/comments`` | Obtener todos los comments | |
+| `` GET ``| ``/comments/post/:postId`` | Obtener todos los comments de un post |``validarPostIdParam`` |
+| `` GET ``| ``/comments/:id`` | Obtener un comment por su id | ``validateObjectId`` ``validarComentarioId`` |
+| ``POST``| ``/comments`` | Crear un comment | ``validarComentario`` ``validarUserComment`` ``validarExistenciaPost`` |
+| `` PUT ``| ``/comments/:id`` | Actualizar contenido de un comment | ``validateObjectId`` ``validarComentarioId`` ``validarCommentAct`` |
+| `` DELETE ``| ``/comments/:id`` | Eliminar comment | ``validateObjectId`` ``validarComentarioId`` |
+
+### Image
+
+| Método| Ruta | Descripción | Middleware |
+| ----- | ---- | ----------- | ---------- |
+| `` GET ``| ``/images`` | Obtener todas las images||
+| `` GET ``| ``/images/:id/`` | Obtener una image por su id | ``validateObjectId`` ``validarImageId`` |
+| ``POST``| ``/images`` | Crear image | ``validarImage`` ``validarExistenciaPost`` |
+| `` PUT ``| ``/images/:id`` | Actualizar url de una iamge | ``validateObjectId`` ``validarImgAct`` ``validarImageId`` |
+| `` DELETE ``| ``/images/:id`` | Eliminar image | ``validateObjectId`` ``validarImageId`` |
+
+## Integrantes
+
+| Nombre | GitHub |
+|------------|---------|
+| Avila, Paz Maria | https://github.com/pazm-avila |
+| Barbosa, Gonzalo Nicolas | https://github.com/gonnbar |
+| Peralta, Melanie Ailen | https://github.com/ailenperalta |
+| Rodriguez, Ana Paula | https://github.com/anapauula1 |

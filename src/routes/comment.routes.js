@@ -20,7 +20,7 @@ const {
 router.get("/", obtenerComentarios);
 router.get("/post/:postId", validarPostIdParam, obtenerComentariosPorPost);
 router.get("/:id", validateObjectId, validarComentarioId, obtenerComentario);
-router.post("/", validarUserComment, validarExistenciaPost, validarComentario, crearComentario);
+router.post("/", validarComentario, validarUserComment, validarExistenciaPost, crearComentario);
 router.put("/:id", validateObjectId, validarComentarioId, validarComentarioAct, actualizarComentario);
 router.delete("/:id", validateObjectId, validarComentarioId, eliminarComentario);
 

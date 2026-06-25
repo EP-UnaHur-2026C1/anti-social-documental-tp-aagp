@@ -1,4 +1,4 @@
-const { User, Post, Comment} = require('../models');
+const { User, Post, Comment } = require('../models');
 const { agregarRelacionesPosts } = require("../utils/agregarRelacionesPosts");
 
 const obtenerUsers = async (req, res) => {
@@ -37,8 +37,17 @@ const obtenerUser = async (req, res) => {
 
 const crearUser = async (req, res) => {
   try {
-    const newUser = await User.create(req.body);
-    res.status(201).json({message: "Usuario creado correctamente"});
+    /*const newUser = await User.create(req.body);
+    res.status(201).json({message: "Usuario creado correctamente"});*/
+
+    const user = await User.create(req.body);
+
+    const nuevoUser = await User.findById(
+      user._id
+    ).select("-password -createdAt -updatedAt -__v");
+
+    res.status(201).json(nuevoUser);
+
   } catch (error) {
     res.status(500).json({
       message: "Error al crear el usuario",
@@ -53,7 +62,7 @@ const actualizarUser = async (req, res) => {
       new: true,
       runValidators: true
     });
-    res.status(200).json({message: "Usuario actualizado"});
+    res.status(200).json({ message: "Usuario actualizado con exito" });
   } catch (error) {
     res.status(500).json({
       error: "Error al actualizar usuario",
@@ -65,7 +74,7 @@ const eliminarUser = async (req, res) => {
   try {
     await User.findByIdAndDelete(req.user._id);
     res.status(200).json({
-      message: "Usuario eliminado correctamente",
+      message: "Usuario eliminado con exito",
     });
   } catch (error) {
     res.status(500).json({
@@ -94,7 +103,10 @@ const obtenerPostPorUsuario = async (req, res) => {
 
 const obtenerUserComments = async (req, res) => {
   try {
-    const userComments = await Comment.find({ userId: req.user._id }).populate({ path: 'postId', select: '-texto -user -tags -__v' }).select('-visible -__v')
+    const userComments = await Comment
+      .find({ userId: req.user._id })
+      .populate({ path: 'postId', select: '-texto -user -tags -createdAt -updatedAt -__v' })
+      .select('-createdAt -updatedAt -__v')
     res.status(200).json(userComments)
   } catch (error) {
     res.status(500).json({

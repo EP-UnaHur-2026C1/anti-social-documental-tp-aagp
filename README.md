@@ -365,6 +365,9 @@ Crear comentarios con diferentes fechas de creación (por ejemplo, mediante ajus
 └── README.md
 
 ```
+## Diagrama
+
+![diagrama](./assets/diagrama.jpeg)
 
 ## Endpoints
 

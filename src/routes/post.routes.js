@@ -16,7 +16,7 @@ const {
     obtenerPosts,
     obtenerPostPorId,
     publicarPost,
-    actualizarPost,
+    actualizarContenidoPost,
     eliminarPost,
     quitarTagAPost,
     agregarTagsAPost,
@@ -26,12 +26,12 @@ const {
 router.get("/", validarPostCache, obtenerPosts);
 router.get("/:id", validarIdPost, obtenerPostPorId);
 router.post("/", validarIdUser, validarPost, validarTags, publicarPost);
-router.patch("/:id", validarIdPost, validarUpdatePost, actualizarPost);
+router.patch("/:id", validarIdPost, validarUpdatePost, actualizarContenidoPost);
 router.delete("/:id", validarIdPost, eliminarPost);
 
 // TAG
 router.patch("/:id/tags", validarIdPost, validarTagsArray, validarTags, agregarTagsAPost);
 router.delete("/:id/tags/:tagId", validarIdPost, validarIdTag, quitarTagAPost);
-router.delete("/:id/tags", validarIdPost, validarTagsArray, validarTags, quitarTodosLosTagsAPost);
+router.delete("/:id/tags", validarIdPost, quitarTodosLosTagsAPost);
 
 module.exports = router;

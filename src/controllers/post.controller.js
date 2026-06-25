@@ -19,7 +19,7 @@ const obtenerPosts = async (req, res) => {
 
 const obtenerPostPorId = async (req, res) => {
     try {
-        const [postConRelaciones] = await agregarRelacionesAPosts([req.post]);
+        const [postConRelaciones] = await agregarRelacionesPosts([req.post]);
         res.status(200).json({
             origen: req.origen,
             post: postConRelaciones
@@ -45,7 +45,7 @@ const publicarPost = async (req,res) => {
     }
 }
 
-const actualizarPost = async (req,res) => {
+const actualizarContenidoPost = async (req,res) => {
     try {
         const post = req.post;
         await Post.updateOne(
@@ -144,7 +144,7 @@ module.exports = {
     obtenerPosts,
     obtenerPostPorId,
     publicarPost,
-    actualizarPost,
+    actualizarContenidoPost,
     eliminarPost,
     quitarTagAPost,
     agregarTagsAPost,

@@ -295,6 +295,7 @@ Crear comentarios con diferentes fechas de creación (por ejemplo, mediante ajus
 .
 ├── assets
 │   ├── ANTI-SOCIALNET.jpeg
+|   ├── diagrama.jpeg
 │   └── Referenciada.png
 ├── src
 │   ├── config

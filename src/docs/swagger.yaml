@@ -1,0 +1,595 @@
+openapi: 3.0.0
+
+info:
+  title: Trabajo AAGP
+  version: 1.0.0
+  description: Documentación de la API
+
+paths:
+  /tags:
+    get:
+      summary: Obtener todos los tags
+      tags:
+        - Tag
+      responses:
+        '200':
+          description: Lista de tags
+
+    post:
+      summary: Crear un tag
+      tags:
+        - Tag
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nombre:
+                  type: string
+      responses:
+        '201':
+          description: Tag creado con éxito
+        '400':
+          description: Error de validación
+
+  /tags/{id}:
+    get:
+      summary: Obtener un tag por ID
+      tags:
+        - Tag
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID del tag
+      responses:
+        '200':
+          description: Se encontró el Tag
+        '404':
+          description: Tag no encontrado
+
+    put:
+      summary: Actualizar un tag
+      tags:
+        - Tag
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID del tag
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nombre:
+                  type: string
+      responses:
+        '200':
+          description: Tag actualizado con éxito
+        '404':
+          description: Tag no encontrado
+
+    delete:
+      summary: Eliminar un tag
+      tags:
+        - Tag
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID del tag
+      responses:
+        '200':
+          description: Tag eliminado correctamente
+        '404':
+          description: Tag no encontrado
+  /images:
+    get:
+      summary: Obtener todas las imágenes
+      tags:
+        - Images
+      responses:
+        '200':
+          description: Lista de imágenes
+
+    post:
+      summary: Crear una imagen
+      tags:
+        - Images
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                url:
+                  type: string
+                postId:
+                  type: string
+      responses:
+        '201':
+          description: Imagen creada con éxito
+        '400':
+          description: Error de validación
+
+  /images/{id}:
+    get:
+      summary: Obtener una imagen por ID
+      tags:
+        - Images
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID de la imagen
+      responses:
+        '200':
+          description: Se encontró la imagen
+        '404':
+          description: Imagen no encontrada
+
+    put:
+      summary: Actualizar una imagen
+      tags:
+        - Images
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID de la imagen
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                url:
+                  type: string
+                postId:
+                  type: string
+      responses:
+        '200':
+          description: Imagen actualizada con éxito
+        '404':
+          description: Imagen no encontrada
+
+    delete:
+      summary: Eliminar una imagen
+      tags:
+        - Images
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID de la imagen
+      responses:
+        '200':
+          description: Imagen eliminada correctamente
+        '404':
+          description: Imagen no encontrada
+  /comments:
+    get:
+      summary: Obtener todos los comments
+      tags:
+        - Comments
+      responses:
+        200:
+          description: Lista de comments
+
+    post:
+      summary: Crear un comment
+      tags:
+        - Comments
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                content:
+                  type: string
+                visible:
+                  type: boolean
+                userId:
+                  type: string
+                postId:
+                  type: string
+              required:
+                - content
+                - userId
+                - postId
+      responses:
+        201:
+          description: Comment creado con éxito
+        400:
+          description: Error de validación
+        404:
+          description: Usuario o Post no encontrado
+
+  /comments/post/{postId}:
+    get:
+      summary: Obtener comentarios visibles de un post
+      tags:
+        - Comments
+      parameters:
+        - in: path
+          name: postId
+          required: true
+          schema:
+            type: string
+          description: ID del post
+      responses:
+        200:
+          description: Lista de comentarios del post
+        404:
+          description: Post no encontrado
+
+  /comments/{id}:
+    get:
+      summary: Obtener un comment por ID
+      tags:
+        - Comments
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID del comment
+      responses:
+        200:
+          description: Se encontró el comment
+        404:
+          description: Comment no encontrado
+
+    put:
+      summary: Actualizar un comment
+      tags:
+        - Comments
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID del comment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                content:
+                  type: string
+                visible:
+                  type: boolean
+      responses:
+        200:
+          description: Comment actualizado con éxito
+        404:
+          description: Comment no encontrado
+
+    delete:
+      summary: Eliminar un comment
+      tags:
+        - Comments
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID del comment
+      responses:
+        200:
+          description: Comment eliminado correctamente
+        404:
+          description: Comment no encontrado
+  /users:
+    get:
+      summary: Obtener todos los users
+      tags:
+        - Users
+      responses:
+        200:
+          description: Lista de users
+
+    post:
+      summary: Crear un user
+      tags:
+        - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - nickname
+                - email
+                - password
+              properties:
+                nickname:
+                  type: string
+                  example: "juan123"
+                email:
+                  type: string
+                  example: "juan@gmail.com"
+                password:
+                  type: string
+                  example: "123456"
+      responses:
+        201:
+          description: User creado con éxito
+        400:
+          description: Error de validación
+
+  /users/{id}:
+    get:
+      summary: Obtener un user por ID
+      tags:
+        - Users
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID del user
+      responses:
+        200:
+          description: Se encontró el user
+        404:
+          description: User no encontrado
+
+    put:
+      summary: Actualizar un user
+      tags:
+        - Users
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID del user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nickname:
+                  type: string
+                  example: "juan123"
+                email:
+                  type: string
+                  example: "juan@gmail.com"
+                password:
+                  type: string
+                  example: "123456"
+      responses:
+        200:
+          description: User actualizado con éxito
+        400:
+          description: Error de validación
+        404:
+          description: User no encontrado
+
+    delete:
+      summary: Eliminar un user
+      tags:
+        - Users
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID del user
+      responses:
+        200:
+          description: User eliminado correctamente
+        404:
+          description: User no encontrado
+  /posts:
+    get:
+      summary: Obtener todos los posts
+      tags:
+        - Posts
+      responses:
+        200:
+          description: Lista de posts
+
+    post:
+      summary: Crear un post
+      tags:
+        - Posts
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - texto
+                - user
+              properties:
+                texto:
+                  type: string
+                  example: "Mi primer post"
+                user:
+                  type: string
+                  example: "6a36924cc5505627a2bdc675"
+                tags:
+                  type: array
+                  items:
+                    type: string
+                  example:
+                    - "6a36919ac5505627a2bdc673"
+      responses:
+        201:
+          description: Post creado con éxito
+        400:
+          description: Error de validación
+
+  /posts/{id}:
+    get:
+      summary: Obtener un post por ID
+      tags:
+        - Posts
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID del post
+      responses:
+        200:
+          description: Se encontró el post
+        404:
+          description: Post no encontrado
+
+    patch:
+      summary: Actualizar un post
+      tags:
+        - Posts
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID del post
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                texto:
+                  type: string
+                  example: "Post actualizado"
+                tags:
+                  type: array
+                  items:
+                    type: string
+      responses:
+        200:
+          description: Post actualizado con éxito
+        404:
+          description: Post no encontrado
+
+    delete:
+      summary: Eliminar un post
+      tags:
+        - Posts
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID del post
+      responses:
+        200:
+          description: Post eliminado correctamente
+        404:
+          description: Post no encontrado
+
+  /posts/{id}/tags:
+    patch:
+      summary: Asociar múltiples tags a un post
+      tags:
+        - Posts
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID del post
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - tagsId
+              properties:
+                tagsId:
+                  type: array
+                  items:
+                    type: string
+      responses:
+        201:
+          description: Tags agregados al post
+        404:
+          description: Post no encontrado
+
+    delete:
+      summary: Eliminar todos los tags de un post
+      tags:
+        - Posts
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID del post
+      responses:
+        200:
+          description: Se quitaron todos los tags del post
+        404:
+          description: Post no encontrado
+
+    delete:
+      summary: Eliminar un tag de un post
+      tags:
+        - Posts
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID del post
+
+        - in: path
+          name: tagId
+          required: true
+          schema:
+            type: string
+          description: ID del tag
+      responses:
+        200:
+          description: Tag eliminado del post con éxito
+        404:
+          description: Post o Tag no encontrado
+          

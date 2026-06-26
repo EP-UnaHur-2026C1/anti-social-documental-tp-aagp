@@ -1,0 +1,123 @@
+const { User, Post, Comment } = require('../models');
+const { agregarRelacionesPosts } = require("../utils/agregarRelacionesPosts");
+
+const obtenerUsers = async (req, res) => {
+  try {
+    const users = await User.find().select(
+      "-email -password -createdAt -updatedAt -__v"
+    )
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({
+      message: "Error al obtener usuarios",
+      error: error.message
+    });
+  }
+};
+
+const obtenerUser = async (req, res) => {
+  try {
+    const user = req.user;
+    const respuesta = {
+      ...(typeof user.toObject === "function"
+        ? user.toObject()
+        : user),
+    };
+    res.status(200).json({
+      origen: req.origen,
+      user: respuesta
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error al obtener usuario.",
+      error: error.message
+    });
+  }
+};
+
+const crearUser = async (req, res) => {
+  try {
+    const user = await User.create(req.body);
+
+    const nuevoUser = await User.findById(
+      user._id
+    ).select("-password -createdAt -updatedAt -__v");
+
+    res.status(201).json(nuevoUser);
+
+  } catch (error) {
+    res.status(500).json({
+      message: "Error al crear el usuario",
+      error: error.message
+    });
+  }
+};
+
+const actualizarUser = async (req, res) => {
+  try {
+    const user = await User.findByIdAndUpdate(req.user._id, req.body, {
+      new: true,
+      runValidators: true
+    });
+    res.status(200).json({ message: "Usuario actualizado con exito" });
+  } catch (error) {
+    res.status(500).json({
+      error: "Error al actualizar usuario",
+    });
+  }
+};
+
+const eliminarUser = async (req, res) => {
+  try {
+    await User.findByIdAndDelete(req.user._id);
+    res.status(200).json({
+      message: "Usuario eliminado con exito",
+    });
+  } catch (error) {
+    res.status(500).json({
+      error: "Error al eliminar usuario",
+    });
+  }
+};
+
+const obtenerPostPorUsuario = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const posts = await Post.find({ user: id })
+      .populate("tags", "nombre")
+      .select("-createdAt -updatedAt -__v -user");
+    const postsConRelaciones = await agregarRelacionesPosts(posts);
+    res.status(200).json({
+      posts: postsConRelaciones
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error al obtener posts del usuario",
+      error: error.message
+    });
+  }
+}
+
+const obtenerUserComments = async (req, res) => {
+  try {
+    const userComments = await Comment
+      .find({ userId: req.user._id })
+      .populate({ path: 'postId', select: '-texto -user -tags -createdAt -updatedAt -__v' })
+      .select('-createdAt -updatedAt -__v')
+    res.status(200).json(userComments)
+  } catch (error) {
+    res.status(500).json({
+      error: "Error al obtener comments del usuario"
+    })
+  }
+}
+
+module.exports = {
+  obtenerUsers,
+  obtenerUser,
+  crearUser,
+  actualizarUser,
+  eliminarUser,
+  obtenerUserComments,
+  obtenerPostPorUsuario
+};

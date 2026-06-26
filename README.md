@@ -196,6 +196,7 @@ Crear comentarios con diferentes fechas de creación (por ejemplo, mediante ajus
 │   │   ├── tag.controller.js
 │   │   └── user.controller.js
 │   ├── docs
+│   │   ├──TP2--AAGP.postman_collection.json
 │   │   └── swagger.yaml
 │   ├── middlewares
 │   │   ├── existenciaUnicoTag.js
@@ -242,10 +243,9 @@ Crear comentarios con diferentes fechas de creación (por ejemplo, mediante ajus
 │   │   ├── postTag.schema.js
 │   │   ├── tag.schema.js
 │   │   └── user.schema.js
-│   ├── utils
-│   │   ├── agregarRelacionesPosts.js
-│   │   └── obtenerComentariosVisibles.js
-│   └── main.js
+│   └── utils
+│       ├── agregarRelacionesPosts.js
+│       └── obtenerComentariosVisibles.js
 ├── app.js
 ├── docker-compose.yml
 ├── package.json
